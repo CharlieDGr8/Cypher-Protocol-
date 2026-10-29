@@ -58,6 +58,8 @@ const Trash2 = mkIcon('<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-
 const Mic = mkIcon('<rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 19v3"/>');
 const Square = mkIcon('<rect x="4" y="4" width="16" height="16" rx="2"/>');
 const Crosshair = mkIcon('<circle cx="12" cy="12" r="9"/><path d="M22 12h-4"/><path d="M6 12H2"/><path d="M12 6V2"/><path d="M12 22v-4"/>');
+const MapPin = mkIcon('<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>');
+const Bookmark = mkIcon('<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/>');
 const Download = mkIcon('<path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/>');
 const Upload = mkIcon('<path d="M12 21V9"/><path d="m7 13 5-5 5 5"/><path d="M5 4h14"/>');
 const X = mkIcon('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>');
@@ -67,6 +69,14 @@ const Play = mkIcon('<path d="M7 4.5v15l13-7.5Z"/>');
 const ArrowLeft = mkIcon('<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>');
 const AlertTriangle = mkIcon('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>');
 const Printer = mkIcon('<path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>');
+const Cloud = mkIcon('<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>');
+const Mail = mkIcon('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>');
+const LogOut = mkIcon('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>');
+const Moon = mkIcon('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>');
+const Lock = mkIcon('<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>');
+const Unlock = mkIcon('<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.7-1.5"/>');
+const Info = mkIcon('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>');
+const Ghost = mkIcon('<path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8Z"/>');
 /* ------------------------------------------------------------------ *
  * Cypher Protocol — field journal for paranormal investigations
  * Persistence via IndexedDB. Runs as a plain web page — no build step.
@@ -191,6 +201,38 @@ const APP_CSS = `
   font-size:11px;letter-spacing:.02em;}
 .cp-dot{width:7px;height:7px;border-radius:999px;background:#3C4B55;flex:0 0 auto;}
 .cp-dot[data-live="1"]{background:var(--green);}
+.cp-infoBtn{width:30px;height:30px;border-radius:999px;border:1px solid var(--rule);
+  background:none;color:var(--mute);cursor:pointer;display:inline-grid;place-items:center;
+  padding:0;flex:0 0 auto;}
+.cp-infoBtn:hover{color:var(--bone);border-color:#375061;}
+.cp-chip--ghost{color:#E9A63C;border-color:#5A431B;background:rgba(233,166,60,.1);
+  letter-spacing:.08em;}
+/* Ghost Mode — the red shift. Every colour in the app flows through the
+   variables on .cp-root, so flipping them flips the whole app: screens,
+   cards, the cloud panel and the danger zones all stay legible because
+   they were built on the same five tones. The few hard-coded colours in
+   the base sheet get matching overrides here. */
+.cp-root[data-ghost="1"]{
+  --ink:#0A0203; --panel:#170507; --panel2:#21080C; --rule:#4A161E;
+  --bone:#F4DAD3; --mute:#B57F74; --amber:#FF5340; --red:#FF2E1F; --green:#FF8A5C;
+}
+.cp-root[data-ghost="1"] .cp-top{background:rgba(10,2,3,.94);}
+.cp-root[data-ghost="1"] .cp-input::placeholder,.cp-root[data-ghost="1"] .cp-ta::placeholder{color:#71392F;}
+.cp-root[data-ghost="1"] .cp-btn:hover{border-color:#7A2A22;}
+.cp-root[data-ghost="1"] .cp-infoBtn:hover{border-color:#7A2A22;}
+.cp-root[data-ghost="1"] .cp-btn--go{color:#2B0503;}
+.cp-root[data-ghost="1"] .cp-pick[data-sel="1"] .cp-tick{color:#2B0503;}
+.cp-root[data-ghost="1"] .cp-input:focus,.cp-root[data-ghost="1"] .cp-ta:focus,
+.cp-root[data-ghost="1"] .cp-select:focus{box-shadow:0 0 0 2px rgba(255,83,64,.22);}
+.cp-root[data-ghost="1"] .cp-btn:focus-visible,.cp-root[data-ghost="1"] .cp-secHead:focus-visible{outline-color:var(--amber);}
+.cp-root[data-ghost="1"] .cp-chip--on{border-color:#6E231C;background:rgba(255,83,64,.14);}
+.cp-root[data-ghost="1"] .cp-chip--Active{border-color:#6E231C;background:rgba(255,83,64,.1);}
+.cp-root[data-ghost="1"] .cp-chip--Planned{color:#FF9D8A;border-color:#5C2A20;}
+.cp-root[data-ghost="1"] .cp-tagbtn[data-on="1"]{background:rgba(255,83,64,.12);}
+.cp-root[data-ghost="1"] .cp-warn{border-color:#6E231C;background:rgba(255,46,31,.12);color:#FFC9BC;}
+.cp-root[data-ghost="1"] .cp-note{border-color:#5C2E1A;background:rgba(255,110,60,.08);color:#FFC9A8;}
+.cp-root[data-ghost="1"] .cp-logline[data-tag="Personal Impression"]{border-left-color:#C96A4A;}
+.cp-root[data-ghost="1"] .cp-chip--ghost{color:#FF8A70;border-color:#6E3A1E;background:rgba(255,110,60,.12);}
 @media (prefers-reduced-motion: reduce){.cp-chev{transition:none;}}
 @media (min-width:980px){
   .cp-shell{display:grid;grid-template-columns:340px minmax(0,1fr);gap:22px;
@@ -312,7 +354,12 @@ const K = {
     index: "cypher-protocol:index",
     case: id => `case:${id}`,
     media: (cid, mid) => `media:${cid}:${mid}`,
-    gear: "cypher-protocol:gear"
+    gear: "cypher-protocol:gear",
+    locations: "cypher-protocol:locations",
+    backupMeta: "cypher-protocol:backupMeta",
+    prefs: "cypher-protocol:prefs",
+    ghost: "cypher-protocol:ghost",
+    ghostPending: "cypher-protocol:ghostPending"
 };
 /* ---------------------------- utils ------------------------------ */
 const pad = (n, w = 2) => String(n).padStart(w, "0");
@@ -396,7 +443,31 @@ async function compressImage(file, maxDim = 1600) {
     return out.length < raw.length ? out : raw;
 }
 const kb = n => n > 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.round(n / 1024)} KB`;
-const space = n => n >= 1073741824 ? `${(n / 1073741824).toFixed(1)} GB` : `${Math.round(n / 1048576)} MB`;
+/* One-shot position fix, promise-shaped. Resolves null on any failure —
+   no API, denied permission, timeout — so callers can stamp coordinates
+   opportunistically and never block a save on the GPS. */
+function currentPosition(timeout = 8000) {
+    return new Promise(resolve => {
+        if (!navigator.geolocation)
+            return resolve(null);
+        let done = false;
+        const finish = v => { if (!done) {
+            done = true;
+            resolve(v);
+        } };
+        try {
+            navigator.geolocation.getCurrentPosition(pos => finish({
+                lat: pos.coords.latitude.toFixed(6),
+                lng: pos.coords.longitude.toFixed(6),
+                accuracy: Math.round(pos.coords.accuracy)
+            }), () => finish(null), { enableHighAccuracy: true, timeout, maximumAge: 60000 });
+        }
+        catch (e) {
+            finish(null);
+        }
+        setTimeout(() => finish(null), timeout + 2000);
+    });
+}
 /* Sync scaffolding. There is no change-notification API, so every device
    polls the same keys and announces itself with a short-lived beacon. */
 const SESSION = uid();
@@ -516,6 +587,318 @@ const summarize = c => ({
     id: c.id, caseNumber: c.caseNumber, title: c.title, status: c.status,
     date: c.date, locationName: c.location.name, updatedAt: c.updatedAt
 });
+/* Everything readable inside a case, flattened to one lowercase string.
+   The case list searches this so a word buried in a witness account or a
+   log entry finds its case. A plain recursive walk — the case body holds
+   no data URLs (media lives under its own keys), so this stays small. */
+const caseHaystack = c => {
+    const parts = [];
+    const walk = v => {
+        if (typeof v === "string")
+            parts.push(v);
+        else if (Array.isArray(v))
+            v.forEach(walk);
+        else if (v && typeof v === "object")
+            Object.values(v).forEach(walk);
+    };
+    walk(c);
+    return parts.join("\n").toLowerCase();
+};
+/* ------------------------- cloud sync ------------------------------ */
+/* Cloud sync is a layer over the local store, never a replacement for
+   it: signed out, offline, or with the library blocked, the app behaves
+   exactly as it did before this existed. The pair below is the project's
+   public client config — the anon key is meant to ship in the app, and
+   row-level security on the server decides what any sign-in may touch. */
+const SB_URL = "https://egnggggnjyljgkirfchr.supabase.co";
+const SB_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVnbmdnZ2duanlsamdraXJmY2hyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMyNzYzNDYsImV4cCI6MjEwODg1MjM0Nn0.8UQEUFEGB3g2HG9v8BiIBolVM1B1ntCDnW-F5BsZdns";
+/* The magic link must come back to whichever copy of the app asked for
+   it — the app is published at more than one address, and a link that
+   lands on a different copy signs THAT copy in, not this one. Taken
+   from the page's own URL (origin + path, no query/hash), so each
+   address returns the link to itself. */
+const sbAppUrl = () => window.location.origin + window.location.pathname;
+let sbClientCache = null;
+function sbClient() {
+    if (sbClientCache)
+        return sbClientCache;
+    const g = typeof window !== "undefined" ? window.supabase : undefined;
+    if (!g || typeof g.createClient !== "function")
+        return null;
+    try {
+        sbClientCache = g.createClient(SB_URL, SB_ANON);
+    }
+    catch (e) {
+        return null;
+    }
+    return sbClientCache;
+}
+const sbAvailable = () => typeof window !== "undefined" && !!window.supabase &&
+    typeof window.supabase.createClient === "function";
+/* Data URL -> Blob, decoded in slices so a long clip doesn't need a
+   second full-size string held in memory alongside the first. The slice
+   length is a multiple of 4, which base64 requires. */
+function dataUrlToBlob(dataUrl) {
+    const comma = dataUrl.indexOf(",");
+    const head = comma >= 0 ? dataUrl.slice(0, comma) : "";
+    const body = comma >= 0 ? dataUrl.slice(comma + 1) : dataUrl;
+    const mime = (head.match(/data:([^;]+)/) || [])[1] || "application/octet-stream";
+    if (!/;base64/i.test(head))
+        return new Blob([decodeURIComponent(body)], { type: mime });
+    const parts = [];
+    const SLICE = 1 << 20;
+    for (let i = 0; i < body.length; i += SLICE) {
+        const bin = atob(body.slice(i, i + SLICE));
+        const bytes = new Uint8Array(bin.length);
+        for (let j = 0; j < bin.length; j++)
+            bytes[j] = bin.charCodeAt(j);
+        parts.push(bytes);
+    }
+    return new Blob(parts, { type: mime });
+}
+const blobToDataUrl = blob => new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(r.error || new Error("could not read a downloaded file"));
+    r.readAsDataURL(blob);
+});
+/* The merge rule for this version is last-write-wins on updated_at,
+   compared as parsed instants (the server echoes timestamps in its own
+   format, so string order would lie). Sync only ever adds or updates —
+   a case deleted on one device is NOT deleted anywhere else. */
+const stampOf = v => Date.parse(v || "") || 0;
+/* --------------------------- ghost mode ---------------------------- */
+/* Ghost Mode, the working half. The red palette lives in CSS; this is
+   the privacy machinery: a PIN that exists only as a salted SHA-256
+   digest, cases flagged `ghost: true` that the sync engine refuses to
+   touch, and a purge that takes a ghosted case back out of the cloud.
+   Everything here is local-first like the rest of the app — no PIN, no
+   cloud and no WebCrypto simply means no ghosting, never a broken app. */
+const ghostCryptoOk = () => typeof window !== "undefined" && !!window.crypto &&
+    !!window.crypto.subtle && typeof window.crypto.subtle.digest === "function";
+async function ghostPinHash(pin, salt) {
+    const buf = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(salt + ":" + pin));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+const ghostSalt = () => [...window.crypto.getRandomValues(new Uint8Array(16))]
+    .map(b => b.toString(16).padStart(2, "0")).join("");
+async function ghostPinCheck(pin) {
+    const rec = await S.get(K.ghost);
+    if (!rec || !rec.salt || !rec.hash || !ghostCryptoOk())
+        return false;
+    try {
+        return (await ghostPinHash(pin, rec.salt)) === rec.hash;
+    }
+    catch (e) {
+        return false;
+    }
+}
+/* Cases ghosted while nobody was signed in still owe the cloud a
+   deletion. The debt is recorded here and the sync engine settles it
+   on its next run. */
+async function ghostQueuePurge(caseId) {
+    const list = (await S.get(K.ghostPending)) || [];
+    if (!list.includes(caseId)) {
+        list.push(caseId);
+        await S.set(K.ghostPending, list);
+    }
+}
+/* Take one case out of the cloud: its media objects, its row, and this
+   device's upload marks (so un-ghosting and re-syncing later starts
+   clean). Returns true only when the cloud is verifiably rid of it —
+   any failure means "not now", and the caller keeps the purge queued. */
+async function ghostPurgeCloud(sb, u, caseId) {
+    try {
+        const listed = await sb.storage.from("media")
+            .list(`${u.id}/${caseId}`, { limit: 1000 });
+        if (listed.error)
+            return false;
+        const paths = new Set(((listed.data || []).filter(o => o && o.name)
+            .map(o => `${u.id}/${caseId}/${o.name}`)));
+        const c = await S.get(K.case(caseId));
+        for (const m of (c && c.media) || [])
+            paths.add(`${u.id}/${caseId}/${m.id}`);
+        if (paths.size) {
+            const { error } = await sb.storage.from("media").remove([...paths]);
+            if (error)
+                return false;
+        }
+        const { error: derr } = await sb.from("cases").delete().eq("id", caseId);
+        if (derr)
+            return false;
+        if (c) {
+            for (const m of c.media || []) {
+                const rec = await S.get(K.media(caseId, m.id));
+                if (rec && rec.cloud) {
+                    const { cloud, ...rest } = rec;
+                    await S.set(K.media(caseId, m.id), rest);
+                }
+            }
+        }
+        return true;
+    }
+    catch (e) {
+        return false;
+    }
+}
+/* The detail view asks for a purge; the CloudSyncPanel owns the client
+   and the session, so it does the work and answers on a second event.
+   Signed out, library missing, panel busy — the answer is simply
+   "not done", and the requester queues the purge instead. */
+function ghostRequestPurge(caseId) {
+    return new Promise(res => {
+        let settled = false;
+        const finish = v => {
+            if (settled)
+                return;
+            settled = true;
+            window.removeEventListener("cp-ghost-purged", onAns);
+            res(v);
+        };
+        const onAns = e => {
+            if (e && e.detail && e.detail.id === caseId)
+                finish(!!e.detail.done);
+        };
+        window.addEventListener("cp-ghost-purged", onAns);
+        try {
+            window.dispatchEvent(new CustomEvent("cp-ghost-purge", { detail: { id: caseId } }));
+        }
+        catch (e) {
+            finish(false);
+            return;
+        }
+        setTimeout(() => finish(false), 3000);
+    });
+}
+async function pullFromCloud(sb, u, hooks) {
+    const { data: rows, error } = await sb.from("cases").select("id,data,updated_at");
+    if (error)
+        throw error;
+    let idx = (await S.get(K.index)) || [];
+    let idxChanged = false;
+    for (const r of rows || []) {
+        const remote = r && r.data;
+        if (!remote || !remote.id)
+            continue;
+        const local = await S.get(K.case(remote.id));
+        /* A ghost case takes no orders from the cloud. It should not be
+           there at all; if a stale copy somehow is, it never overwrites
+           — or resurrects — the local ghost. */
+        if (local && local.ghost)
+            continue;
+        if (local && stampOf(local.updatedAt) >= stampOf(r.updated_at || remote.updatedAt))
+            continue;
+        await S.set(K.case(remote.id), remote);
+        const sum = summarize(remote);
+        idx = idx.some(x => x.id === remote.id)
+            ? idx.map(x => (x.id === remote.id ? sum : x))
+            : [...idx, sum];
+        idxChanged = true;
+    }
+    if (idxChanged && hooks.onIndex)
+        hooks.onIndex(idx);
+    const { data: lrows, error: lerr } = await sb.from("locations").select("id,data,updated_at");
+    if (lerr)
+        throw lerr;
+    if (lrows && lrows.length) {
+        const byId = new Map((((await S.get(K.locations)) || []))
+            .filter(l => l && l.id).map(l => [l.id, l]));
+        let locChanged = false;
+        for (const r of lrows) {
+            const remote = r && r.data;
+            if (!remote || !remote.id)
+                continue;
+            const cur = byId.get(remote.id);
+            if (cur && stampOf(cur.updatedAt) >= stampOf(r.updated_at || remote.updatedAt))
+                continue;
+            byId.set(remote.id, remote);
+            locChanged = true;
+        }
+        if (locChanged && hooks.onLocations)
+            hooks.onLocations([...byId.values()]);
+    }
+    /* Media fill-in: any entry whose bytes never reached this device —
+       a notes-backup placeholder, or a case that arrived by pull — gets
+       one download attempt per sync. A miss is normal: it only means the
+       file was never uploaded from anywhere, and it changes nothing. */
+    idx = (await S.get(K.index)) || [];
+    for (const row of idx) {
+        const c = await S.get(K.case(row.id));
+        if (!c || c.ghost)
+            continue;
+        for (const m of c.media || []) {
+            const rec = await S.get(K.media(c.id, m.id));
+            if (rec && rec.dataUrl)
+                continue;
+            try {
+                const { data: blob, error: derr } = await sb.storage.from("media")
+                    .download(`${u.id}/${c.id}/${m.id}`);
+                if (derr || !blob)
+                    continue;
+                const dataUrl = await blobToDataUrl(blob);
+                await S.set(K.media(c.id, m.id), {
+                    kind: m.kind, mime: m.mime || blob.type || "", name: m.name || m.id,
+                    dataUrl, cloud: u.id
+                });
+            }
+            catch (e) { /* one bad file must not sink the rest of the sync */ }
+        }
+    }
+}
+async function pushToCloud(sb, u) {
+    /* Ghost housekeeping comes first: cases that were ghosted while
+       offline or signed out owe the cloud a deletion, and a signed-in
+       sync is where the debt gets settled. A purge that fails stays
+       queued for the next sync — it never blocks the push itself. */
+    const pending = (await S.get(K.ghostPending)) || [];
+    if (pending.length) {
+        const remain = [];
+        for (const cid of pending) {
+            if (!(await ghostPurgeCloud(sb, u, cid)))
+                remain.push(cid);
+        }
+        if (remain.length !== pending.length)
+            await S.set(K.ghostPending, remain);
+    }
+    const idx = (await S.get(K.index)) || [];
+    const cases = [];
+    for (const row of idx) {
+        const c = await S.get(K.case(row.id));
+        /* Ghost cases are never synced — no upsert, and because the media
+           pass below walks this same list, no media upload either. */
+        if (c && c.id && !c.ghost)
+            cases.push(c);
+    }
+    if (cases.length) {
+        const { error } = await sb.from("cases").upsert(cases.map(c => ({ id: c.id, user_id: u.id, data: c, updated_at: c.updatedAt || nowISO() })), { onConflict: "id" });
+        if (error)
+            throw error;
+    }
+    const locs = ((await S.get(K.locations)) || []).filter(l => l && l.id);
+    if (locs.length) {
+        const { error } = await sb.from("locations").upsert(locs.map(l => ({ id: l.id, user_id: u.id, data: l, updated_at: l.updatedAt || nowISO() })), { onConflict: "id" });
+        if (error)
+            throw error;
+    }
+    /* Media bytes follow the case that owns them. The record keeps an
+       additive `cloud` mark — the account it was uploaded to — so a file
+       is sent once, not on every sync. Nothing is deleted locally: this
+       device keeps its own copy regardless of the cloud. */
+    for (const c of cases) {
+        for (const m of c.media || []) {
+            const rec = await S.get(K.media(c.id, m.id));
+            if (!rec || !rec.dataUrl)
+                continue;
+            if (rec.cloud === u.id)
+                continue;
+            const blob = dataUrlToBlob(rec.dataUrl);
+            const { error } = await sb.storage.from("media").upload(`${u.id}/${c.id}/${m.id}`, blob, { upsert: true, contentType: rec.mime || blob.type || "application/octet-stream" });
+            if (error)
+                throw error;
+            await S.set(K.media(c.id, m.id), { ...rec, cloud: u.id });
+        }
+    }
+}
 /* ------------------------- primitives ---------------------------- */
 function Field({ label, value, onChange, placeholder, mono, type = "text", inputMode }) {
     return (React.createElement("div", null,
@@ -562,7 +945,36 @@ function PlanSection({ v, up }) {
         React.createElement(Area, { label: "Research done beforehand", value: v.research, onChange: x => set("research", x), placeholder: "Records, prior reports, sources checked" })));
 }
 /* --------------------- 2. Location profile ------------------------ */
-function LocationSection({ v, up }) {
+function LocationSection({ v, up, locations, onSaveLocation, onDeleteLocation }) {
+    const [pick, setPick] = useState("");
+    const [saveMsg, setSaveMsg] = useState("");
+    const saved = Array.isArray(locations) ? locations : [];
+    /* Fill this case from a saved location. Only the reusable fields move —
+       witnesses and prior reported activity belong to the case, not the site. */
+    const applyPick = () => {
+        const prof = saved.find(l => l.id === pick);
+        if (!prof)
+            return;
+        up(p => ({
+            ...p,
+            location: {
+                ...p.location,
+                name: prof.name || "", address: prof.address || "",
+                description: prof.description || "", age: prof.age || "",
+                access: prof.access || ""
+            }
+        }));
+        setSaveMsg(`Filled from “${prof.name}”.`);
+    };
+    const saveCurrent = () => {
+        if (!onSaveLocation || !v.name.trim())
+            return;
+        onSaveLocation({
+            name: v.name, address: v.address, description: v.description,
+            age: v.age, access: v.access
+        });
+        setSaveMsg(`Saved “${v.name.trim()}” — it will be offered on every case.`);
+    };
     const set = (k, val) => up(p => ({ ...p, location: { ...p.location, [k]: val } }));
     const setW = (id, k, val) => up(p => ({
         ...p,
@@ -583,12 +995,27 @@ function LocationSection({ v, up }) {
         location: { ...p.location, witnesses: p.location.witnesses.filter(w => w.id !== id) }
     }));
     return (React.createElement(React.Fragment, null,
+        saved.length > 0 && (React.createElement("div", { style: { marginBottom: 12 } },
+            React.createElement("label", { className: "cp-label" }, "Saved locations"),
+            React.createElement("div", { className: "cp-row" },
+                React.createElement("select", { className: "cp-select", style: { flex: 1 }, value: pick, onChange: e => setPick(e.target.value) },
+                    React.createElement("option", { value: "" }, "Choose a saved location\u2026"),
+                    saved.map(l => React.createElement("option", { key: l.id, value: l.id }, l.name))),
+                React.createElement("button", { className: "cp-btn cp-btn--sm", disabled: !pick, onClick: applyPick }, "Fill from saved"),
+                React.createElement("button", { className: "cp-btn cp-btn--sm cp-btn--ghost", disabled: !pick, onClick: () => { if (onDeleteLocation)
+                        onDeleteLocation(pick); setPick(""); setSaveMsg(""); }, "aria-label": "Remove saved location" },
+                    React.createElement(Trash2, { size: 14 }))))),
         React.createElement(Field, { label: "Location name", value: v.name, onChange: x => set("name", x), placeholder: "Old Jefferson Mill" }),
         React.createElement(Area, { label: "Address", value: v.address, onChange: x => set("address", x), rows: 2 }),
         React.createElement(Area, { label: "Description", value: v.description, onChange: x => set("description", x), placeholder: "Layout, condition, rooms of interest" }),
         React.createElement(Field, { label: "Structure age / history", value: v.age, onChange: x => set("age", x), placeholder: "Built 1878, mill until 1954, vacant since" }),
         React.createElement(Area, { label: "Prior reported activity", value: v.priorActivity, onChange: x => set("priorActivity", x) }),
         React.createElement(Area, { label: "Access notes", value: v.access, onChange: x => set("access", x), rows: 2, placeholder: "Gate codes, parking, which door, who to call" }),
+        onSaveLocation && (React.createElement("div", { style: { marginTop: 8 } },
+            React.createElement("button", { className: "cp-btn cp-btn--sm", disabled: !v.name.trim(), onClick: saveCurrent },
+                React.createElement(Bookmark, { size: 14 }),
+                " Save as a reusable location"),
+            saveMsg && React.createElement("p", { className: "cp-hint", style: { marginTop: 6 } }, saveMsg))),
         React.createElement("label", { className: "cp-label" }, "Witness testimony"),
         v.witnesses.length === 0 && React.createElement("p", { className: "cp-hint" }, "No witness accounts recorded."),
         v.witnesses.map(w => (React.createElement("div", { className: "cp-item", key: w.id },
@@ -888,20 +1315,88 @@ function ReadingsSection({ rows, up }) {
 }
 /* ----------------------- 7. Session log --------------------------- */
 const SENSES = ["Sight", "Hearing", "Touch", "Smell", "Taste", "Instrument", "Other"];
-function LogSection({ log, up }) {
+function LogSection({ log, pins, up }) {
     const [text, setText] = useState("");
     const [tag, setTag] = useState("Observation");
+    /* Dictation. The Web Speech API is Chromium/Safari-only and prefixed in
+       both, so the button simply does not exist where it is unsupported. The
+       transcript lands in the entry box as ordinary text — editable before
+       it is added, like anything typed. */
+    const SR = (typeof window !== "undefined")
+        ? (window.SpeechRecognition || window.webkitSpeechRecognition) : null;
+    const [listening, setListening] = useState(false);
+    const recRef = useRef(null);
+    useEffect(() => () => {
+        if (recRef.current) {
+            try {
+                recRef.current.abort();
+            }
+            catch (e) { }
+            recRef.current = null;
+        }
+    }, []);
+    const toggleDictation = () => {
+        if (!SR)
+            return;
+        if (listening) {
+            try {
+                recRef.current && recRef.current.stop();
+            }
+            catch (e) { }
+            return;
+        }
+        let rec;
+        try {
+            rec = new SR();
+        }
+        catch (e) {
+            return;
+        }
+        rec.lang = (navigator.language || "en-US");
+        rec.interimResults = false;
+        rec.continuous = false;
+        rec.onresult = ev => {
+            let said = "";
+            for (let i = ev.resultIndex; i < ev.results.length; i++) {
+                if (ev.results[i].isFinal)
+                    said += ev.results[i][0].transcript;
+            }
+            said = said.trim();
+            if (said)
+                setText(prev => (prev.trim() ? prev.replace(/\s+$/, "") + " " + said : said));
+        };
+        rec.onend = () => { recRef.current = null; setListening(false); };
+        rec.onerror = () => { recRef.current = null; setListening(false); };
+        recRef.current = rec;
+        try {
+            rec.start();
+            setListening(true);
+        }
+        catch (e) {
+            recRef.current = null;
+        }
+    };
     const add = () => {
         const t = text.trim();
         if (!t)
             return;
         const entry = {
-            id: uid(), ts: nowISO(), tag, text: t,
+            id: uid(), ts: nowISO(), tag, text: t, geo: null,
             anomaly: tag === "Anomaly"
                 ? { perceived: "", sense: "", witnesses: "", natural: "" } : null
         };
         up(p => ({ ...p, log: [...p.log, entry] }));
         setText("");
+        /* Stamp the position on the entry — after it is saved, never instead
+           of saving it. Only offered once the case has a located pin (you are
+           on site, not planning at a desk), and any failure just leaves the
+           entry unstamped. */
+        if ((pins || []).some(p => p.lat && p.lng)) {
+            currentPosition().then(geo => {
+                if (geo)
+                    up(p => ({ ...p, log: p.log.map(e => e.id === entry.id ? { ...e, geo } : e) }));
+            });
+        }
     };
     const setA = (id, k, val) => up(p => ({
         ...p, log: p.log.map(e => e.id === id ? { ...e, anomaly: { ...(e.anomaly || {}), [k]: val } } : e)
@@ -912,9 +1407,15 @@ function LogSection({ log, up }) {
         React.createElement("textarea", { className: "cp-ta", rows: 2, value: text, placeholder: "What just happened?", onChange: e => setText(e.target.value), onKeyDown: e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey))
                 add(); } }),
         React.createElement("div", { className: "cp-row", style: { margin: "8px 0" } }, TAGS.map(t => (React.createElement("button", { key: t, className: "cp-tagbtn", "data-on": tag === t ? "1" : "0", "data-danger": t === "Anomaly" ? "1" : "0", onClick: () => setTag(t) }, t)))),
-        React.createElement("button", { className: "cp-btn cp-btn--go", style: { width: "100%" }, onClick: add },
-            React.createElement(Plus, { size: 17 }),
-            " Add timestamped entry"),
+        React.createElement("div", { className: "cp-row" },
+            React.createElement("button", { className: "cp-btn cp-btn--go", style: { flex: 1 }, onClick: add },
+                React.createElement(Plus, { size: 17 }),
+                " Add timestamped entry"),
+            SR && (React.createElement("button", { className: "cp-btn" + (listening ? " cp-btn--rec" : ""), onClick: toggleDictation, "aria-pressed": listening ? "true" : "false", title: listening ? "Stop dictation" : "Dictate the entry instead of typing it" },
+                React.createElement(Mic, { size: 17 }),
+                " ",
+                listening ? "Listening…" : "Dictate"))),
+        SR && listening && React.createElement("p", { className: "cp-hint", style: { marginTop: 6 } }, "Speak now \u2014 the words land in the box above, where you can fix them before adding."),
         entries.length === 0 && React.createElement("p", { className: "cp-empty" }, "Log is empty."),
         entries.map(e => (React.createElement("div", { className: "cp-logline", "data-tag": e.tag, key: e.id },
             React.createElement("div", { className: "cp-row", style: { justifyContent: "space-between" } },
@@ -925,6 +1426,13 @@ function LogSection({ log, up }) {
                 React.createElement("button", { className: "cp-btn cp-btn--sm cp-btn--ghost", onClick: () => del(e.id), "aria-label": "Delete entry" },
                     React.createElement(Trash2, { size: 14 }))),
             React.createElement("div", { style: { fontSize: 15, whiteSpace: "pre-wrap" } }, e.text),
+            e.geo && (React.createElement("div", { className: "cp-ts cp-mono", style: { marginTop: 3 } },
+                React.createElement(MapPin, { size: 11 }),
+                " ",
+                e.geo.lat,
+                ", ",
+                e.geo.lng,
+                e.geo.accuracy ? ` · ±${e.geo.accuracy} m` : "")),
             e.anomaly && (React.createElement("div", { style: { marginTop: 6 } },
                 React.createElement(Area, { label: "What was perceived", rows: 2, value: e.anomaly.perceived, onChange: x => setA(e.id, "perceived", x) }),
                 React.createElement("label", { className: "cp-label" }, "Which sense"),
@@ -941,12 +1449,12 @@ function MediaSection({ caseId, media, log, pins, up }) {
     const [busy, setBusy] = useState("");
     const [rec, setRec] = useState(null);
     const [secs, setSecs] = useState(0);
+    const photoIn = useRef(null), camIn = useRef(null), audioIn = useRef(null), videoIn = useRef(null), vcamIn = useRef(null);
     // Bulk delete. `armed` is the second tap — a mis-tap that wipes 40 photos
     // is not something an undo-less app should allow on one press.
     const [selMode, setSelMode] = useState(false);
     const [sel, setSel] = useState({});
     const [armed, setArmed] = useState(false);
-    const photoIn = useRef(null), camIn = useRef(null), audioIn = useRef(null), videoIn = useRef(null), vcamIn = useRef(null);
     useEffect(() => {
         let dead = false;
         (async () => {
@@ -968,7 +1476,7 @@ function MediaSection({ caseId, media, log, pins, up }) {
         const t = setInterval(() => setSecs(s => s + 1), 1000);
         return () => clearInterval(t);
     }, [rec]);
-    const store = async (dataUrl, kind, mime, name) => {
+    const store = async (dataUrl, kind, mime, name, geo) => {
         setErr("");
         if (dataUrl.length > MAX_VALUE_CHARS) {
             setErr(`"${name}" is about ${kb(dataUrl.length * 0.75)}, over the ${Math.round(MAX_VALUE_CHARS * 0.75 / 1048576)} MB per-item ceiling. Nothing was saved and nothing was altered. Trim the clip or shoot at a lower resolution, then try again.`);
@@ -994,18 +1502,23 @@ function MediaSection({ caseId, media, log, pins, up }) {
             ...p,
             media: [...p.media, {
                     id, kind, mime, name, size: dataUrl.length, caption: "",
-                    ts: nowISO(), linkKind: "", linkId: ""
+                    ts: nowISO(), linkKind: "", linkId: "", geo: geo || null
                 }]
         }));
     };
     const onPick = async (e, kind) => {
         const files = Array.from(e.target.files || []);
         e.target.value = "";
+        /* Stamp new photos with where they were taken, when the case already
+           has a located pin (the same on-site signal the session log uses).
+           One fix for the whole batch; a failure just means no stamp. */
+        const geo = (kind === "photo" && (pins || []).some(p => p.lat && p.lng))
+            ? await currentPosition() : null;
         for (const f of files) {
             setBusy(`Processing ${f.name}…`);
             try {
                 const data = kind === "photo" ? await compressImage(f) : await readAsDataURL(f);
-                await store(data, kind, f.type || "application/octet-stream", f.name);
+                await store(data, kind, f.type || "application/octet-stream", f.name, geo);
             }
             catch (er) {
                 setErr(`${f.name}: ${er.message}`);
@@ -1084,7 +1597,8 @@ function MediaSection({ caseId, media, log, pins, up }) {
         React.createElement("div", { className: "cp-ts cp-mono", style: { marginTop: 4 } },
             clockOf(m.ts),
             " \u00B7 ",
-            kb(m.size * 0.75))));
+            kb(m.size * 0.75),
+            m.geo ? ` · ${m.geo.lat}, ${m.geo.lng}` : "")));
     return (React.createElement(React.Fragment, null,
         err && React.createElement(Warn, null, err),
         busy && React.createElement("p", { className: "cp-hint" }, busy),
@@ -1133,7 +1647,7 @@ function MediaSection({ caseId, media, log, pins, up }) {
                 React.createElement("div", { className: "cp-thumbs" }, photos.map(m => selMode
                     ? React.createElement("button", { key: m.id, className: "cp-pick", "data-sel": sel[m.id] ? "1" : "0", "aria-pressed": !!sel[m.id], "aria-label": `${sel[m.id] ? "Deselect" : "Select"} ${m.name}`, onClick: () => { setArmed(false); setSel(x => ({ ...x, [m.id]: !x[m.id] })); } },
                         tile(m),
-                        React.createElement("span", { className: "cp-tick" }, sel[m.id] ? "\u2713" : ""))
+                        React.createElement("span", { className: "cp-tick" }, sel[m.id] ? "✓" : ""))
                     : React.createElement("div", { key: m.id }, tile(m)))),
                 !selMode && photos.map(m => (React.createElement("div", { className: "cp-item", key: m.id },
                     React.createElement("strong", { style: { fontSize: 13 }, className: "cp-mono" }, m.name),
@@ -1197,6 +1711,11 @@ function toText(c, gear) {
     const line = (k, v) => { if (v !== undefined && v !== null && String(v).trim() !== "")
         L.push(`${k}: ${v}`); };
     const head = t => { L.push("", "-".repeat(58), t.toUpperCase(), "-".repeat(58)); };
+    /* A ghost case reports everything except where it happened: no
+       address, no directions, no pins, no coordinate stamps anywhere in
+       this file. The JSON archive keeps it all — that one never leaves
+       the investigator's own hands. */
+    const ghost = !!c.ghost;
     L.push("THRESHOLD — FIELD RECORD", "=".repeat(58));
     line("Case number", c.caseNumber);
     line("Title", c.title || "(untitled)");
@@ -1204,6 +1723,8 @@ function toText(c, gear) {
     line("Date", c.date);
     line("Opened", c.createdAt);
     line("Last updated", c.updatedAt);
+    if (ghost)
+        L.push("", "GHOST CASE — its location is withheld from this report.");
     head("1. Pre-investigation planning");
     line("Objective / hypothesis", c.plan.objective);
     line("Team", c.plan.team);
@@ -1215,22 +1736,31 @@ function toText(c, gear) {
     line("Prior research", c.plan.research);
     head("2. Location profile");
     line("Name", c.location.name);
-    line("Address", c.location.address);
-    line("Description", c.location.description);
+    if (ghost) {
+        L.push("Location detail: Location withheld — ghost case");
+    }
+    else {
+        line("Address", c.location.address);
+        line("Description", c.location.description);
+    }
     line("Structure age / history", c.location.age);
     line("Prior reported activity", c.location.priorActivity);
-    line("Access notes", c.location.access);
+    if (!ghost)
+        line("Access notes", c.location.access);
     c.location.witnesses.forEach((w, i) => {
         L.push("", `  Witness ${i + 1}: ${w.name || "unnamed"} (experience dated ${w.date || "unknown"})`);
         if (w.account)
             L.push(`  ${w.account}`);
     });
     head("3. Map and coordinates");
-    if (!c.pins.length)
+    if (ghost)
+        L.push("Location withheld — ghost case");
+    else if (!c.pins.length)
         L.push("(no pins)");
-    c.pins.forEach(p => {
-        L.push(`  ${p.label || "unlabeled"} — ${p.lat || "?"}, ${p.lng || "?"}${p.note ? ` — ${p.note}` : ""}`);
-    });
+    else
+        c.pins.forEach(p => {
+            L.push(`  ${p.label || "unlabeled"} — ${p.lat || "?"}, ${p.lng || "?"}${p.note ? ` — ${p.note}` : ""}`);
+        });
     head("4. Weather conditions");
     line("Temperature", c.weather.temp);
     line("Humidity", c.weather.humidity);
@@ -1261,6 +1791,8 @@ function toText(c, gear) {
         L.push("(empty)");
     [...c.log].sort((a, b) => a.ts.localeCompare(b.ts)).forEach(e => {
         L.push("", `  ${clockOf(e.ts)}  [${e.tag}]  ${e.text}`);
+        if (e.geo && !ghost)
+            L.push(`     at ${e.geo.lat}, ${e.geo.lng}`);
         if (e.anomaly) {
             if (e.anomaly.perceived)
                 L.push(`     perceived: ${e.anomaly.perceived}`);
@@ -1275,7 +1807,7 @@ function toText(c, gear) {
     head("8. Media");
     if (!c.media.length)
         L.push("(none)");
-    c.media.forEach(m => L.push(`  ${clockOf(m.ts)}  ${m.kind}  ${m.name}${m.caption ? ` — ${m.caption}` : ""}${m.linkId ? `  [linked to ${m.linkKind} ${m.linkId}]` : ""}`));
+    c.media.forEach(m => L.push(`  ${clockOf(m.ts)}  ${m.kind}  ${m.name}${m.caption ? ` — ${m.caption}` : ""}${m.linkId ? `  [linked to ${m.linkKind} ${m.linkId}]` : ""}${m.geo && !ghost ? `  [at ${m.geo.lat}, ${m.geo.lng}]` : ""}`));
     if (c.media.length)
         L.push("  (files themselves are in the JSON archive, not this text file)");
     head("9. Post-investigation analysis");
@@ -1428,6 +1960,9 @@ function secHead(n, title) {
 }
 function dossierCase(c, gear, photos) {
     const P = [];
+    /* Ghost cases print with their location stripped — same rule as the
+       text report: no address, no directions, no coordinate table. */
+    const ghost = !!c.ghost;
     const stampable = c.status === "Closed" ? "case closed" : c.status === "Active" ? "active file" : "planned";
     P.push(`<div class="case">`);
     /* masthead */
@@ -1459,15 +1994,15 @@ function dossierCase(c, gear, photos) {
       <p style="margin:3px 0 0">${val(w.account)}</p></div>`).join("");
     P.push(`<div class="sec">${secHead(2, "Location profile")}
     <div class="two">${fld("Location name", c.location.name)}${fld("Structure age / history", c.location.age)}</div>
-    ${fld("Address", c.location.address)}
-    ${fld("Description", c.location.description)}
+    ${fld("Address", ghost ? "Location withheld — ghost case" : c.location.address)}
+    ${ghost ? "" : fld("Description", c.location.description)}
     ${fld("Prior reported activity", c.location.priorActivity)}
-    ${fld("Access notes", c.location.access)}
+    ${ghost ? "" : fld("Access notes", c.location.access)}
     <div class="sub">Witness testimony</div>
     ${wit || `<p>${NIL}</p>`}
   </div>`);
     /* 3 */
-    const pins = c.pins.length ? `<table><thead><tr><th>Ref</th><th>Label</th><th>Latitude</th><th>Longitude</th><th>Note</th></tr></thead><tbody>
+    const pins = ghost ? `<p>Location withheld — ghost case</p>` : c.pins.length ? `<table><thead><tr><th>Ref</th><th>Label</th><th>Latitude</th><th>Longitude</th><th>Note</th></tr></thead><tbody>
     ${c.pins.map((p, i) => `<tr><td class="m">P-${pad(i + 1)}</td><td>${val(p.label)}</td>
       <td class="m">${val(p.lat)}</td><td class="m">${val(p.lng)}</td><td>${val(p.note)}</td></tr>`).join("")}
     </tbody></table>` : `<p>${NIL}</p>`;
@@ -1601,56 +2136,41 @@ function dossierHTML(cases, gear) {
 function downloadLogo() {
     saveFile("cypher-protocol-seal.svg", sealInk(512), "image/svg+xml");
 }
-/* A photographic plate prints about 2.4in wide, so 1000px is already more
-   detail than any printer resolves. Full-size shots are re-rendered down
-   before they enter the dossier: the browser has to decode every image in
-   that document into an uncompressed bitmap, and a 1600px photo costs about
-   7MB of memory to hold that way. A dozen of them is what was killing the
-   tab mid-print. */
-async function shrinkForPrint(dataUrl, maxDim = 1000) {
-    try {
-        const img = await loadImage(dataUrl);
-        const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
-        if (scale === 1 && dataUrl.length < 400000)
-            return dataUrl;
-        const w = Math.max(1, Math.round(img.width * scale));
-        const h = Math.max(1, Math.round(img.height * scale));
-        const c = document.createElement("canvas");
-        c.width = w;
-        c.height = h;
-        c.getContext("2d").drawImage(img, 0, 0, w, h);
-        const out = c.toDataURL("image/jpeg", 0.72);
-        c.width = c.height = 0; // drop the backing store now, not whenever
-        return out.length < dataUrl.length ? out : dataUrl;
-    }
-    catch (e) {
-        return dataUrl;
-    }
-}
 async function photosFor(c) {
     const out = {};
     for (const m of c.media.filter(x => x.kind === "photo")) {
         const rec = await S.get(K.media(c.id, m.id));
         if (rec && rec.dataUrl)
-            out[m.id] = await shrinkForPrint(rec.dataUrl);
+            out[m.id] = rec.dataUrl;
     }
     return out;
 }
 // Opens the system print dialog against a hidden frame. Returns false if the
 // sandbox refuses, so the caller can fall back to downloading the file.
-function printDoc(html) {
+/* An app launched from the home screen gets no print dialog and no ordinary
+   downloads on iOS. Everything that leaves the app has to go via the share
+   sheet or via Safari instead. */
+const isStandalone = () => (typeof navigator !== "undefined" && navigator.standalone === true) ||
+    (typeof matchMedia !== "undefined" && matchMedia("(display-mode: standalone)").matches);
+/* Hand a document to Safari, where printing works. Returns false if the
+   browser blocked the window, which it will unless this runs on a tap. */
+function openInBrowser(html) {
     try {
-        // Tear down any frame left over from an earlier attempt first. Each one
-        // holds a whole second copy of the dossier, so a failed print followed
-        // by a retry used to put two of them in memory at the same time.
-        Array.prototype.forEach.call(document.querySelectorAll("iframe[data-cp-print]"), el => {
-            try {
-                el.remove();
-            }
-            catch (e) { }
-        });
+        const blob = new Blob([html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const w = window.open(url, "_blank");
+        setTimeout(() => URL.revokeObjectURL(url), 120000);
+        return !!w;
+    }
+    catch (e) {
+        return false;
+    }
+}
+function printDoc(html) {
+    if (isStandalone() && openInBrowser(html))
+        return true;
+    try {
         const f = document.createElement("iframe");
-        f.setAttribute("data-cp-print", "1");
         f.setAttribute("style", "position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0");
         document.body.appendChild(f);
         const d = f.contentWindow.document;
@@ -1666,7 +2186,7 @@ function printDoc(html) {
             setTimeout(() => { try {
                 document.body.removeChild(f);
             }
-            catch (e) { } }, 60000);
+            catch (e) { } }, 120000);
         };
         let waited = 0;
         const tick = () => {
@@ -1684,17 +2204,107 @@ function printDoc(html) {
     }
 }
 /* ------------------------- case detail ---------------------------- */
-function CaseDetail({ id, onBack, onSaved, gear, addGear, removeGear, rail }) {
+/* The Ghost Mode explainer. Reachable from the ⓘ button beside the
+   mode switch and beside the per-case control — and deliberately
+   reachable without unlocking anything, because it is also where the
+   PIN warning lives. Plain language, no sales copy: what the red is
+   for, what a ghost case is, the GPS rule, and the one warning that
+   cannot be repeated too often. */
+function GhostInfo({ onClose }) {
+    return (React.createElement("div", { style: {
+            position: "fixed", inset: 0, background: "rgba(4,6,8,.85)", display: "grid",
+            placeItems: "center", zIndex: 70, padding: 18
+        }, onClick: onClose },
+        React.createElement("div", { className: "cp-card", style: { maxWidth: 430, padding: 18, maxHeight: "86vh", overflowY: "auto" }, onClick: e => e.stopPropagation() },
+            React.createElement("div", { className: "cp-row", style: { justifyContent: "space-between" } },
+                React.createElement("h3", { style: { margin: 0, fontSize: 17 } }, "Ghost Mode, explained"),
+                React.createElement("button", { className: "cp-infoBtn", onClick: onClose, "aria-label": "Close explanation" },
+                    React.createElement(X, { size: 15 }))),
+            React.createElement("p", { className: "cp-mono", style: { fontSize: 12, letterSpacing: ".12em", margin: "14px 0 4px" } }, "THE RED LIGHT"),
+            React.createElement("p", { className: "cp-hint", style: { marginTop: 0 } }, "The Ghost Mode switch turns the whole app red on black. Red light does not wreck your night vision, and it does not carry across a field the way a white screen does \u2014 so you can work the file in the dark without announcing yourself. It is only a colour change. On its own, it hides nothing."),
+            React.createElement("p", { className: "cp-mono", style: { fontSize: 12, letterSpacing: ".12em", margin: "14px 0 4px" } }, "GHOST CASES"),
+            React.createElement("p", { className: "cp-hint", style: { marginTop: 0 } }, "Any case can be made a ghost, from inside the case. A ghost case disappears \u2014 from the list, from the count, from search. It is not shown as locked. It is not shown at all, until you unlock it with your PIN."),
+            React.createElement("p", { className: "cp-mono", style: { fontSize: 12, letterSpacing: ".12em", margin: "14px 0 4px" } }, "THE GPS RULE"),
+            React.createElement("p", { className: "cp-hint", style: { marginTop: 0 } }, "Ghost cases never sync. Their coordinates stay on this device, they are kept out of your cloud space, and if a copy is already up there when you ghost the case, it is deleted. Printed and text reports replace the address, the map pins and every coordinate with \u201CLocation withheld \u2014 ghost case\u201D. A JSON archive backup still holds the whole case, ghost flag and all \u2014 that file is your private copy, and the case stays a ghost wherever it is restored."),
+            React.createElement("p", { className: "cp-mono", style: { fontSize: 12, letterSpacing: ".12em", margin: "14px 0 4px" } }, "LOCKING AND UNLOCKING"),
+            React.createElement("p", { className: "cp-hint", style: { marginTop: 0 } }, "Unlock with the \u201CUnlock ghost cases\u201D button beside the Ghost Mode switch. Ghost cases come back for this session, marked with a ghost tag. Lock them again with the same control, or just close the app \u2014 they hide themselves either way."),
+            React.createElement(Warn, null, "There is no PIN recovery. Forget the PIN and the ghost cases stay hidden \u2014 no reset, no back door, and a backup does not help: it carries the same PIN. Keep it somewhere that is not this phone."),
+            React.createElement("button", { className: "cp-btn cp-btn--go", style: { width: "100%", marginTop: 12 }, onClick: onClose }, "Got it"))));
+}
+/* The Ghost Mode control cluster: the red-mode switch, its ⓘ button,
+   and the ghost-case lock control. Lives above the case list and the
+   detail alike, so locking is always one tap away. */
+function GhostModeBar({ red, onToggleRed, unlocked, ghostCount, onUnlock, onLock }) {
+    const [info, setInfo] = useState(false);
+    const [pad, setPad] = useState(false);
+    const [pin, setPin] = useState("");
+    const [pinErr, setPinErr] = useState("");
+    const closePad = () => { setPad(false); setPin(""); setPinErr(""); };
+    const attempt = async () => {
+        if (await onUnlock(pin)) {
+            closePad();
+            return;
+        }
+        setPin("");
+        setPinErr("That PIN doesn't open it.");
+    };
+    return (React.createElement("div", { className: "cp-wrap", style: { paddingTop: 8, paddingBottom: 0 } },
+        React.createElement("div", { className: "cp-row", style: { gap: 6 } },
+            React.createElement("button", { className: "cp-btn cp-btn--sm" + (red ? " cp-btn--go" : ""), onClick: onToggleRed, "aria-pressed": red ? "true" : "false" },
+                React.createElement(Moon, { size: 15 }),
+                " Ghost Mode",
+                red ? " — on" : ""),
+            React.createElement("button", { className: "cp-infoBtn", onClick: () => setInfo(true), "aria-label": "What Ghost Mode does", title: "What Ghost Mode does" },
+                React.createElement(Info, { size: 15 })),
+            unlocked ? (React.createElement("button", { className: "cp-btn cp-btn--sm cp-btn--ghost", onClick: onLock },
+                React.createElement(Lock, { size: 14 }),
+                " Lock ghost cases")) : ghostCount > 0 ? (React.createElement("button", { className: "cp-btn cp-btn--sm cp-btn--ghost", onClick: () => setPad(v => !v) },
+                React.createElement(Unlock, { size: 14 }),
+                " Unlock ghost cases")) : null),
+        pad && !unlocked && (React.createElement("div", { className: "cp-card", style: { padding: 14, marginTop: 8 } },
+            React.createElement("p", { className: "cp-mono", style: { fontSize: 12, letterSpacing: ".12em", margin: "0 0 6px" } }, "GHOST CASES \u2014 ENTER PIN"),
+            React.createElement("div", { className: "cp-row", style: { gap: 6 } },
+                React.createElement("input", { className: "cp-input cp-mono", style: { flex: 1, minWidth: 130, letterSpacing: ".35em" }, type: "password", inputMode: "numeric", autoComplete: "off", maxLength: 6, placeholder: "PIN", value: pin, onChange: e => setPin(e.target.value.replace(/\D/g, "").slice(0, 6)), onKeyDown: e => { if (e.key === "Enter" && pin.length >= 4)
+                        attempt(); } }),
+                React.createElement("button", { className: "cp-btn cp-btn--go", onClick: attempt, disabled: pin.length < 4 }, "Unlock"),
+                React.createElement("button", { className: "cp-btn cp-btn--ghost", onClick: closePad }, "Cancel")),
+            pinErr && React.createElement("p", { className: "cp-hint", style: { color: "var(--red)", marginTop: 8 } }, pinErr),
+            React.createElement("p", { className: "cp-hint", style: { marginTop: 8 } }, "No PIN, no cases \u2014 there is no recovery. The \u24D8 button above explains the whole thing."))),
+        info && React.createElement(GhostInfo, { onClose: () => setInfo(false) })));
+}
+function CaseDetail({ id, onBack, onSaved, gear, addGear, removeGear, rail, locations, onSaveLocation, onDeleteLocation, backupMeta, onSnoozeBackup, onExported }) {
     const [data, setData] = useState(null);
     const [open, setOpen] = useState({ 1: true });
     const [state, setState] = useState("Loading…");
     const [printMsg, setPrintMsg] = useState("");
     const [dbusy, setDbusy] = useState("");
     const [conflict, setConflict] = useState(null);
+    const [closeNudge, setCloseNudge] = useState(false);
+    const [ghostUi, setGhostUi] = useState(null); // null | "pin1" | "pin2" | "confirm"
+    const [ghostPin, setGhostPin] = useState("");
+    const [ghostPin2, setGhostPin2] = useState("");
+    const [ghostMsg, setGhostMsg] = useState("");
+    const [ghostInfo, setGhostInfo] = useState(false);
     const saved = useRef("");
     const docCache = useRef(null);
     const dataRef = useRef(null);
     const savedSummary = useRef("");
+    const prevStatus = useRef(null);
+    /* Closing a case is the moment a backup matters most — the fieldwork is
+       done and the file just sits in the browser. Nudge once, right here,
+       unless reminders are snoozed. */
+    useEffect(() => {
+        if (!data)
+            return;
+        const prev = prevStatus.current;
+        prevStatus.current = data.status;
+        if (prev && prev !== "Closed" && data.status === "Closed") {
+            const snoozed = backupMeta && backupMeta.snoozedUntil &&
+                Date.parse(backupMeta.snoozedUntil) > Date.now();
+            if (!snoozed)
+                setCloseNudge(true);
+        }
+    }, [data && data.status]);
     useEffect(() => {
         let dead = false;
         (async () => {
@@ -1783,8 +2393,76 @@ function CaseDetail({ id, onBack, onSaved, gear, addGear, removeGear, rail }) {
     };
     const up = useCallback(fn => setData(prev => (prev ? fn(prev) : prev)), []);
     const toggle = n => setOpen(o => ({ ...o, [n]: !o[n] }));
+    /* Ghosting this case. The first ghost on a device sets the PIN —
+       entered twice, matching, and only its salted digest is stored.
+       Ghosting itself flips the flag, then takes the case out of the
+       cloud: purged on the spot when signed in, queued for the next
+       sync when not. Then the screen leaves — a freshly ghosted case
+       is not on the list to come back to. */
+    const startGhost = async () => {
+        setGhostMsg("");
+        if (!ghostCryptoOk()) {
+            setGhostMsg("This browser cannot protect a PIN (WebCrypto is unavailable), so ghosting is switched off here.");
+            return;
+        }
+        const rec = await S.get(K.ghost);
+        setGhostUi(rec && rec.hash ? "confirm" : "pin1");
+    };
+    const pinContinue = () => {
+        if (!/^\d{4,6}$/.test(ghostPin)) {
+            setGhostMsg("A PIN is 4 to 6 digits.");
+            return;
+        }
+        setGhostMsg("");
+        setGhostUi("pin2");
+    };
+    const pinConfirm = async () => {
+        if (ghostPin2 !== ghostPin) {
+            setGhostMsg("Those don't match — start again.");
+            setGhostPin("");
+            setGhostPin2("");
+            setGhostUi("pin1");
+            return;
+        }
+        const salt = ghostSalt();
+        await S.set(K.ghost, { salt, hash: await ghostPinHash(ghostPin, salt) });
+        setGhostMsg("");
+        setGhostUi("confirm");
+    };
+    const finishGhost = async () => {
+        /* The flag goes straight to the store before this view closes.
+           The normal save path is a 650 ms debounce whose timer is
+           cleared on unmount, and ghosting leaves the screen at once —
+           a flag queued through up() alone would never reach disk. */
+        const base = dataRef.current || data;
+        if (!base)
+            return;
+        const stamped = { ...base, ghost: true, updatedAt: nowISO() };
+        saved.current = JSON.stringify(stamped);
+        setData(stamped);
+        setGhostUi(null);
+        setGhostPin("");
+        setGhostPin2("");
+        setGhostMsg("");
+        try {
+            await S.set(K.case(id), stamped);
+        }
+        catch (e) { }
+        const purged = await ghostRequestPurge(id);
+        if (!purged)
+            await ghostQueuePurge(id);
+        onBack();
+    };
+    const unghost = () => up(p => { const n = { ...p }; delete n.ghost; return n; });
+    const cancelGhost = () => { setGhostUi(null); setGhostPin(""); setGhostPin2(""); setGhostMsg(""); };
     const exportJson = async () => {
         const payload = { ...data, exportedAt: nowISO(), mediaFiles: {} };
+        /* The PIN record rides along so a restored ghost case stays
+           locked to the same PIN on the other side. Only the salted
+           digest ever travels — never the PIN itself. */
+        const grec = await S.get(K.ghost);
+        if (grec && grec.salt && grec.hash)
+            payload.ghostPin = grec;
         for (const m of data.media) {
             const rec = await S.get(K.media(id, m.id));
             if (rec)
@@ -1792,6 +2470,8 @@ function CaseDetail({ id, onBack, onSaved, gear, addGear, removeGear, rail }) {
         }
         const r = await saveFile(`${data.caseNumber}.json`, JSON.stringify(payload, null, 2), "application/json");
         setPrintMsg(saveResultMessage(r, "JSON archive"));
+        if (r !== "cancelled" && onExported)
+            onExported();
     };
     if (!data)
         return React.createElement("div", { className: "cp-wrap" },
@@ -1810,10 +2490,6 @@ function CaseDetail({ id, onBack, onSaved, gear, addGear, removeGear, rail }) {
         const html = await buildDoc();
         const ok = printDoc(html);
         setDbusy("");
-        // The assembled dossier can run to tens of megabytes of text. Once the
-        // print frame has it there is no reason to keep ours; rebuilding on the
-        // next tap is cheaper than carrying it around.
-        setTimeout(() => { docCache.current = null; }, 45000);
         setPrintMsg(ok
             ? "Print dialog opening. Choose Save as PDF. If no dialog appeared, use Download case file instead."
             : "The browser blocked printing. Use Download case file instead.");
@@ -1855,10 +2531,49 @@ function CaseDetail({ id, onBack, onSaved, gear, addGear, removeGear, rail }) {
                 React.createElement("div", { className: "cp-row", style: { marginTop: 8 } },
                     React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: takeRemote }, "Load theirs"),
                     React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: () => setConflict(null) }, "Keep mine"))))),
+        closeNudge && (React.createElement("div", { className: "cp-warn", style: { alignItems: "flex-start" } },
+            React.createElement(AlertTriangle, { size: 16, style: { flex: "0 0 auto", marginTop: 2 } }),
+            React.createElement("div", { style: { flex: 1 } },
+                "Case closed. It now lives only in this browser \u2014 export a backup (Back up notes, or the JSON archive below) so it survives the phone.",
+                React.createElement("div", { className: "cp-row", style: { marginTop: 8 } },
+                    React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: () => setCloseNudge(false) }, "Dismiss"),
+                    React.createElement("button", { className: "cp-btn cp-btn--sm cp-btn--ghost", onClick: () => { setCloseNudge(false); if (onSnoozeBackup)
+                            onSnoozeBackup(); } }, "Don\u2019t show for 30 days"))))),
+        React.createElement("div", { className: "cp-card", style: { padding: "12px 14px" } },
+            React.createElement("div", { className: "cp-row", style: { justifyContent: "space-between" } },
+                React.createElement("span", { className: "cp-mono", style: { fontSize: 12, letterSpacing: ".12em" } },
+                    React.createElement(Ghost, { size: 13, style: { verticalAlign: -2, marginRight: 6 } }),
+                    "GHOST CASE"),
+                React.createElement("button", { className: "cp-infoBtn", onClick: () => setGhostInfo(true), "aria-label": "What ghost cases do", title: "What ghost cases do" },
+                    React.createElement(Info, { size: 15 }))),
+            data.ghost ? (React.createElement(React.Fragment, null,
+                React.createElement("p", { className: "cp-hint" }, "This case is a ghost. It stays out of your list, your count and your search while locked, it never syncs, and its location is stripped from printed and text reports."),
+                React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: unghost }, "Remove ghost status"))) : ghostUi === null ? (React.createElement(React.Fragment, null,
+                React.createElement("p", { className: "cp-hint" }, "Make this case disappear \u2014 hidden behind a PIN, kept off the cloud, its location stripped from anything printed or shared."),
+                React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: startGhost }, "Make this a ghost case"))) : ghostUi === "pin1" ? (React.createElement(React.Fragment, null,
+                React.createElement("label", { className: "cp-label", style: { marginTop: 4 } }, "Choose a PIN for ghost cases"),
+                React.createElement("div", { className: "cp-row", style: { gap: 6 } },
+                    React.createElement("input", { className: "cp-input cp-mono", style: { flex: 1, minWidth: 130, letterSpacing: ".35em" }, type: "password", inputMode: "numeric", autoComplete: "off", maxLength: 6, placeholder: "4\u20136 digits", value: ghostPin, onChange: e => setGhostPin(e.target.value.replace(/\D/g, "").slice(0, 6)) }),
+                    React.createElement("button", { className: "cp-btn cp-btn--go", onClick: pinContinue, disabled: ghostPin.length < 4 }, "Continue"),
+                    React.createElement("button", { className: "cp-btn cp-btn--ghost", onClick: cancelGhost }, "Cancel")),
+                React.createElement("p", { className: "cp-hint", style: { marginTop: 8 } }, "You will use this PIN to unlock ghost cases on this device. There is no recovery if you forget it."))) : ghostUi === "pin2" ? (React.createElement(React.Fragment, null,
+                React.createElement("label", { className: "cp-label", style: { marginTop: 4 } }, "Type it again to confirm"),
+                React.createElement("div", { className: "cp-row", style: { gap: 6 } },
+                    React.createElement("input", { className: "cp-input cp-mono", style: { flex: 1, minWidth: 130, letterSpacing: ".35em" }, type: "password", inputMode: "numeric", autoComplete: "off", maxLength: 6, placeholder: "Same PIN again", value: ghostPin2, onChange: e => setGhostPin2(e.target.value.replace(/\D/g, "").slice(0, 6)) }),
+                    React.createElement("button", { className: "cp-btn cp-btn--go", onClick: pinConfirm, disabled: ghostPin2.length < 4 }, "Set PIN"),
+                    React.createElement("button", { className: "cp-btn cp-btn--ghost", onClick: cancelGhost }, "Cancel")))) : (React.createElement(React.Fragment, null,
+                React.createElement(Warn, null, "Ghost this case? It leaves your list, your count and your search until you unlock it with your PIN. If a copy is in your cloud space it is deleted \u2014 right now if you are signed in, or at the next sync if you are not. Printed and text reports strip its address, pins and coordinates; a JSON archive backup still holds the whole case."),
+                React.createElement("div", { className: "cp-row", style: { gap: 6, flexWrap: "wrap" } },
+                    React.createElement("button", { className: "cp-btn cp-btn--rec", onClick: finishGhost },
+                        React.createElement(Ghost, { size: 15 }),
+                        " Ghost this case"),
+                    React.createElement("button", { className: "cp-btn", onClick: cancelGhost }, "Keep it visible")))),
+            ghostMsg && React.createElement("p", { className: "cp-hint", style: { color: "var(--red)", marginTop: 8 } }, ghostMsg)),
+        ghostInfo && React.createElement(GhostInfo, { onClose: () => setGhostInfo(false) }),
         React.createElement(Section, { n: "1", title: "Pre-investigation planning", open: !!open[1], onToggle: () => toggle(1), summary: data.plan.permissionsObtained ? "permission ok" : "" },
             React.createElement(PlanSection, { v: data.plan, up: up })),
         React.createElement(Section, { n: "2", title: "Location profile", open: !!open[2], onToggle: () => toggle(2), summary: data.location.witnesses.length ? `${data.location.witnesses.length} witnesses` : "" },
-            React.createElement(LocationSection, { v: data.location, up: up })),
+            React.createElement(LocationSection, { v: data.location, up: up, locations: locations, onSaveLocation: onSaveLocation, onDeleteLocation: onDeleteLocation })),
         React.createElement(Section, { n: "3", title: "Map and coordinates", open: !!open[3], onToggle: () => toggle(3), summary: data.pins.length ? `${data.pins.length} pins` : "" },
             React.createElement(MapSection, { v: data, up: up })),
         React.createElement(Section, { n: "4", title: "Weather conditions", open: !!open[4], onToggle: () => toggle(4), summary: data.weather.temp || "" },
@@ -1868,7 +2583,7 @@ function CaseDetail({ id, onBack, onSaved, gear, addGear, removeGear, rail }) {
         React.createElement(Section, { n: "6", title: "Environmental readings", open: !!open[6], onToggle: () => toggle(6), summary: data.readings.length ? `${data.readings.length} rows` : "" },
             React.createElement(ReadingsSection, { rows: data.readings, up: up })),
         React.createElement(Section, { n: "7", title: "Session log", open: !!open[7], onToggle: () => toggle(7), summary: data.log.length ? `${data.log.length} entries${anomalies ? ` · ${anomalies} anomalies` : ""}` : "" },
-            React.createElement(LogSection, { log: data.log, up: up })),
+            React.createElement(LogSection, { log: data.log, pins: data.pins, up: up })),
         React.createElement(Section, { n: "8", title: "Media", open: !!open[8], onToggle: () => toggle(8), summary: data.media.length ? `${data.media.length} files` : "" },
             React.createElement(MediaSection, { caseId: id, media: data.media, log: data.log, pins: data.pins, up: up })),
         React.createElement(Section, { n: "9", title: "Post-investigation analysis", open: !!open[9], onToggle: () => toggle(9), summary: data.analysis.followups.filter(f => !f.done).length ? `${data.analysis.followups.filter(f => !f.done).length} open` : "" },
@@ -2294,21 +3009,35 @@ function Nearby({ onStart, onClose }) {
                     React.createElement("a", { className: "cp-btn cp-btn--sm", onClick: e => e.stopPropagation(), href: `https://maps.apple.com/?ll=${r.lat},${r.lon}&q=${encodeURIComponent(r.name)}`, target: "_blank", rel: "noreferrer" }, "Directions"),
                     r.url && (React.createElement("a", { className: "cp-btn cp-btn--sm", onClick: e => e.stopPropagation(), href: r.url, target: "_blank", rel: "noreferrer" }, "Read"))))))))));
 }
-function CaseList({ index, onOpen, onNew, onDelete, loading, onArchive, onBackup, onImport, rail, activeId }) {
+function CaseList({ index, onOpen, onNew, onDelete, loading, onArchive, onBackup, onImport, rail, activeId, ready, onSendBackup, onCopyBackup, pasteOpen, setPasteOpen, pasted, setPasted, onRestoreText, standalone, onReclaim, onPackCase, corpus, ghostIds }) {
     const [nearby, setNearby] = useState(false);
     const [q, setQ] = useState("");
     const [desc, setDesc] = useState(true);
-    const rows = useMemo(() => {
+    const { rows, deepIds } = useMemo(() => {
         const t = q.trim().toLowerCase();
-        const f = index.filter(c => !t ||
-            (c.title || "").toLowerCase().includes(t) ||
+        const deep = new Set();
+        const summaryHit = c => (c.title || "").toLowerCase().includes(t) ||
             (c.locationName || "").toLowerCase().includes(t) ||
-            (c.caseNumber || "").toLowerCase().includes(t));
-        return f.sort((a, b) => {
+            (c.caseNumber || "").toLowerCase().includes(t);
+        const f = index.filter(c => {
+            if (!t || summaryHit(c))
+                return true;
+            /* Full-text pass: the corpus holds everything inside the case —
+               log entries, witness accounts, planning, analysis — flattened
+               to one lowercase string per case by the app. */
+            const hay = corpus && corpus[c.id];
+            if (hay && hay.includes(t)) {
+                deep.add(c.id);
+                return true;
+            }
+            return false;
+        });
+        const sorted = f.sort((a, b) => {
             const r = (a.date || "").localeCompare(b.date || "") || (a.caseNumber || "").localeCompare(b.caseNumber || "");
             return desc ? -r : r;
         });
-    }, [index, q, desc]);
+        return { rows: sorted, deepIds: deep };
+    }, [index, q, desc, corpus]);
     return (React.createElement("div", { className: "cp-wrap" },
         React.createElement("div", { className: "cp-top" },
             React.createElement("div", { className: "cp-brand" },
@@ -2322,7 +3051,7 @@ function CaseList({ index, onOpen, onNew, onDelete, loading, onArchive, onBackup
             React.createElement("div", { className: "cp-row", style: { marginTop: 10 } },
                 React.createElement("div", { style: { flex: 1, position: "relative", minWidth: 180 } },
                     React.createElement(Search, { size: 16, style: { position: "absolute", left: 11, top: 15, color: "var(--mute)" } }),
-                    React.createElement("input", { className: "cp-input", style: { paddingLeft: 34 }, value: q, placeholder: "Search title, location, case number", onChange: e => setQ(e.target.value) })),
+                    React.createElement("input", { className: "cp-input", style: { paddingLeft: 34 }, value: q, placeholder: "Search everything \u2014 titles, logs, witnesses, notes", onChange: e => setQ(e.target.value) })),
                 React.createElement("button", { className: "cp-btn cp-btn--icon", onClick: () => setDesc(d => !d), title: "Sort by date" }, desc ? "Newest" : "Oldest")),
             rail && (React.createElement("button", { className: "cp-btn cp-btn--go", style: { width: "100%", marginTop: 8 }, onClick: onNew },
                 React.createElement(Plus, { size: 18 }),
@@ -2337,17 +3066,41 @@ function CaseList({ index, onOpen, onNew, onDelete, loading, onArchive, onBackup
                         " Print file"),
                     React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: onBackup },
                         React.createElement(Download, { size: 15 }),
-                        " Back up")),
+                        " Back up notes")),
                 React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: onImport },
                     React.createElement(Upload, { size: 15 }),
                     " Restore"),
+                React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: () => setPasteOpen(v => !v), title: "Restore from pasted text" }, "Paste"),
+                React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: onReclaim, title: "Delete files left behind by deleted cases" },
+                    React.createElement(Trash2, { size: 15 }),
+                    " Reclaim"),
                 React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: downloadLogo, title: "Save the seal as an SVG for letterhead" },
                     React.createElement(Download, { size: 15 }),
                     " Seal"),
                 React.createElement("button", { className: "cp-btn cp-btn--sm" + (nearby ? " cp-btn--go" : ""), onClick: () => setNearby(v => !v), title: "Find sites around you" },
                     React.createElement(Crosshair, { size: 15 }),
                     " Nearby"))),
+        ready && (React.createElement("div", { className: "cp-card", style: { marginTop: 10 } },
+            React.createElement("p", { className: "cp-mono", style: { fontSize: 12, letterSpacing: ".12em", margin: "0 0 6px" } }, "BACKUP READY"),
+            React.createElement("p", { className: "cp-hint", style: { marginTop: 0 } },
+                ready.label || `${ready.n} case${ready.n === 1 ? "" : "s"}`,
+                " \u2014 ",
+                ready.mb,
+                " MB. Hand it off now; this has to be a separate tap or iOS will not open the share sheet."),
+            React.createElement("div", { className: "cp-row", style: { gap: 6, flexWrap: "wrap" } },
+                React.createElement("button", { className: "cp-btn cp-btn--go", onClick: onSendBackup },
+                    React.createElement(Upload, { size: 15 }),
+                    " Save / share the file"),
+                React.createElement("button", { className: "cp-btn", onClick: onCopyBackup }, "Copy as text")))),
+        pasteOpen && (React.createElement("div", { className: "cp-card", style: { marginTop: 10 } },
+            React.createElement("p", { className: "cp-mono", style: { fontSize: 12, letterSpacing: ".12em", margin: "0 0 6px" } }, "PASTE A BACKUP"),
+            React.createElement("textarea", { className: "cp-ta", rows: 5, value: pasted, placeholder: "Paste the backup text here", onChange: e => setPasted(e.target.value) }),
+            React.createElement("div", { className: "cp-row", style: { gap: 6, marginTop: 6 } },
+                React.createElement("button", { className: "cp-btn cp-btn--go", onClick: () => onRestoreText(pasted), disabled: !pasted.trim() }, "Restore from text"),
+                React.createElement("button", { className: "cp-btn cp-btn--ghost", onClick: () => setPasteOpen(false) }, "Cancel")),
+            React.createElement("p", { className: "cp-hint" }, "Use this when the other copy could not produce a file. Copy there, paste here."))),
         nearby && React.createElement(Nearby, { onClose: () => setNearby(false), onStart: r => { setNearby(false); onNew(r); } }),
+        standalone && (React.createElement("p", { className: "cp-hint", style: { marginTop: 8 } }, "Running from the home screen. Printing opens in Safari, and saving goes through the share sheet \u2014 iOS gives installed apps no print dialog and no plain downloads.")),
         loading && React.createElement(CoinLoad, { label: "Reading case files" }),
         !loading && rows.length === 0 && (React.createElement("p", { className: "cp-empty" }, index.length === 0
             ? "No cases yet. Open one before you head out — the planning section is the point."
@@ -2359,12 +3112,250 @@ function CaseList({ index, onOpen, onNew, onDelete, loading, onArchive, onBackup
                     React.createElement("span", { className: `cp-chip cp-chip--${c.status}` }, c.status)),
                 React.createElement("div", { style: { fontSize: 16, fontWeight: 550, margin: "4px 0 2px" } }, c.title || "Untitled case"),
                 React.createElement("div", { className: "cp-hint" }, c.locationName || "No location set"),
+                ghostIds && ghostIds.has(c.id) && (React.createElement("span", { className: "cp-chip cp-chip--ghost", style: { marginTop: 6 } },
+                    React.createElement(Ghost, { size: 11 }),
+                    " GHOST")),
+                deepIds.has(c.id) && React.createElement("div", { className: "cp-hint", style: { color: "var(--amber)" } }, "Matches text inside the case"),
                 React.createElement("div", { className: "cp-hint cp-mono", style: { marginTop: 2 } }, c.date)),
+            React.createElement("button", { className: "cp-btn cp-btn--sm cp-btn--ghost", title: "Export this case with its media", style: { position: "absolute", right: 52, bottom: 8 }, onClick: e => { e.stopPropagation(); onPackCase(c); } },
+                React.createElement(Download, { size: 15 })),
             React.createElement("button", { className: "cp-btn cp-btn--sm cp-btn--ghost", style: { position: "absolute", right: 6, bottom: 8 }, onClick: () => onDelete(c), "aria-label": `Delete ${c.caseNumber}` },
                 React.createElement(Trash2, { size: 15 }))))),
         !rail && React.createElement("button", { className: "cp-btn cp-btn--go cp-fab", onClick: onNew },
             React.createElement(Plus, { size: 18 }),
             " New case")));
+}
+/* Cloud sync panel. Local-first to the last: every cloud call is
+   fire-and-report, so a failure lands on the status line and changes
+   nothing on this device. Pull and push both run on sign-in and on
+   "Sync now"; a debounced push follows local edits while signed in. */
+function CloudSyncPanel({ index, locations, onPulled }) {
+    const [lib, setLib] = useState(sbAvailable());
+    const [email, setEmail] = useState("");
+    const [user, setUser] = useState(null);
+    const [status, setStatus] = useState("");
+    const [busy, setBusy] = useState(false);
+    const [linkSent, setLinkSent] = useState(false);
+    const [delArm, setDelArm] = useState(false);
+    const clientRef = useRef(null);
+    const userRef = useRef(null);
+    const syncingRef = useRef(false);
+    const syncedForRef = useRef(null);
+    const onPulledRef = useRef(onPulled);
+    onPulledRef.current = onPulled;
+    /* The library loads in parallel with the app and can land after
+       this panel first renders — the loader announces it, and a slow
+       poll covers any browser that drops the event. */
+    useEffect(() => {
+        if (lib)
+            return;
+        const onReady = () => setLib(true);
+        window.addEventListener("cp-supabase", onReady);
+        const iv = setInterval(() => { if (sbAvailable())
+            setLib(true); }, 1500);
+        return () => { window.removeEventListener("cp-supabase", onReady); clearInterval(iv); };
+    }, [lib]);
+    useEffect(() => {
+        if (!lib)
+            return;
+        const sb = sbClient();
+        if (!sb)
+            return;
+        clientRef.current = sb;
+        let dead = false;
+        sb.auth.getSession().then(({ data }) => {
+            if (dead)
+                return;
+            const s = data && data.session;
+            setUser(s && s.user ? { id: s.user.id, email: s.user.email } : null);
+        }).catch(() => { });
+        const sub = sb.auth.onAuthStateChange((_ev, session) => {
+            setUser(session && session.user ? { id: session.user.id, email: session.user.email } : null);
+        });
+        return () => {
+            dead = true;
+            if (sub && sub.data && sub.data.subscription)
+                sub.data.subscription.unsubscribe();
+        };
+    }, [lib]);
+    const runSync = async (mode) => {
+        const sb = clientRef.current, u = userRef.current;
+        if (!sb || !u || syncingRef.current)
+            return;
+        syncingRef.current = true;
+        setBusy(true);
+        setStatus("Syncing…");
+        try {
+            if (mode === "full") {
+                await pullFromCloud(sb, u, {
+                    onIndex: next => onPulledRef.current(next, null),
+                    onLocations: next => onPulledRef.current(null, next)
+                });
+            }
+            await pushToCloud(sb, u);
+            setStatus("Last synced " + clockOf(nowISO()));
+        }
+        catch (e) {
+            setStatus("Sync problem: " + ((e && e.message) || String(e)));
+        }
+        syncingRef.current = false;
+        setBusy(false);
+    };
+    const runSyncRef = useRef(runSync);
+    runSyncRef.current = runSync;
+    /* Ghosting a case asks for its cloud copy to be removed. The panel
+       owns the client and the session, so it answers the request: purge
+       now if signed in, otherwise "not done" — and the requester queues
+       the purge for the next sync instead. */
+    useEffect(() => {
+        const onPurge = async (e) => {
+            const cid = e && e.detail && e.detail.id;
+            if (!cid)
+                return;
+            const sb = clientRef.current || sbClient();
+            const u = userRef.current;
+            let done = false;
+            if (sb && u)
+                done = await ghostPurgeCloud(sb, u, cid);
+            try {
+                window.dispatchEvent(new CustomEvent("cp-ghost-purged", { detail: { id: cid, done } }));
+            }
+            catch (err) { }
+        };
+        window.addEventListener("cp-ghost-purge", onPurge);
+        return () => window.removeEventListener("cp-ghost-purge", onPurge);
+    }, []);
+    /* A fresh sign-in (or a returning one found in storage) gets one
+       full sync; token refreshes for the same account do not retrigger. */
+    useEffect(() => {
+        userRef.current = user;
+        if (!user)
+            setDelArm(false);
+    }, [user]);
+    useEffect(() => {
+        if (!user) {
+            syncedForRef.current = null;
+            return;
+        }
+        if (syncedForRef.current === user.id)
+            return;
+        syncedForRef.current = user.id;
+        runSyncRef.current("full");
+    }, [user]);
+    /* Edits made while signed in follow themselves up, a few seconds
+       after things go quiet. A pull changes these too, which simply
+       re-sends what just arrived — harmless, and it closes the loop. */
+    useEffect(() => {
+        if (!user)
+            return;
+        const t = setTimeout(() => runSyncRef.current("push"), 4000);
+        return () => clearTimeout(t);
+    }, [index, locations, user]);
+    const sendLink = async () => {
+        const sb = clientRef.current || sbClient();
+        const addr = email.trim();
+        if (!sb || !addr)
+            return;
+        clientRef.current = sb;
+        setBusy(true);
+        setStatus("");
+        try {
+            const { error } = await sb.auth.signInWithOtp({
+                email: addr,
+                options: { emailRedirectTo: sbAppUrl() }
+            });
+            if (error)
+                throw error;
+            setLinkSent(true);
+            setStatus("Sign-in link sent — open it on this device to finish signing in.");
+        }
+        catch (e) {
+            setStatus("Could not send the link: " + ((e && e.message) || String(e)));
+        }
+        setBusy(false);
+    };
+    const signOut = async () => {
+        const sb = clientRef.current;
+        if (sb) {
+            try {
+                await sb.auth.signOut();
+            }
+            catch (e) { }
+        }
+        setUser(null);
+        setLinkSent(false);
+        setDelArm(false);
+        setStatus("");
+    };
+    /* Account deletion — required by the App Store for any app with
+       sign-in. One server-side function (public.delete_my_account,
+       applied from delete-account.sql) wipes the caller's cloud rows,
+       media objects and auth user; a SECURITY DEFINER RPC is the only
+       door a client has to auth.users. Local data is deliberately
+       untouched: this closes the cloud account, not this device. Only
+       an RPC success signs out — a failure stays signed in and reports
+       on the status line, like every other cloud problem. */
+    const deleteAccount = async () => {
+        const sb = clientRef.current || sbClient();
+        if (!sb || !userRef.current)
+            return;
+        clientRef.current = sb;
+        setBusy(true);
+        try {
+            const { error } = await sb.rpc("delete_my_account");
+            if (error)
+                throw error;
+            setDelArm(false);
+            try {
+                await sb.auth.signOut();
+            }
+            catch (e) { }
+            setUser(null);
+            setLinkSent(false);
+            setStatus("Account deleted — your cloud cases, locations and media are gone for good. The copies on this device were not touched.");
+        }
+        catch (e) {
+            setStatus("Could not delete the account: " + ((e && e.message) || String(e)));
+        }
+        setBusy(false);
+    };
+    /* No library, no panel — the app is exactly what it was. */
+    if (!lib)
+        return null;
+    return (React.createElement("div", { className: "cp-wrap", style: { paddingTop: 10, paddingBottom: 0 } },
+        React.createElement("div", { className: "cp-card" },
+            React.createElement("p", { className: "cp-mono", style: { fontSize: 12, letterSpacing: ".12em", margin: "0 0 6px" } },
+                React.createElement(Cloud, { size: 13, style: { verticalAlign: -2, marginRight: 6 } }),
+                "CLOUD SYNC"),
+            user ? (React.createElement(React.Fragment, null,
+                React.createElement("p", { className: "cp-hint", style: { marginTop: 0 } },
+                    "Signed in as ",
+                    user.email,
+                    ". Cases and media copy up to your private cloud space and follow you between devices. This device stays the one you work from \u2014 nothing here needs the cloud to work."),
+                React.createElement("div", { className: "cp-row", style: { gap: 6, flexWrap: "wrap" } },
+                    React.createElement("button", { className: "cp-btn cp-btn--go", onClick: () => runSyncRef.current("full"), disabled: busy },
+                        React.createElement(RefreshCw, { size: 15 }),
+                        " Sync now"),
+                    React.createElement("button", { className: "cp-btn", onClick: signOut, disabled: busy },
+                        React.createElement(LogOut, { size: 15 }),
+                        " Sign out")),
+                React.createElement("div", { style: { marginTop: 14, borderTop: "1px solid var(--rule)", paddingTop: 12 } }, delArm ? (React.createElement(React.Fragment, null,
+                    React.createElement(Warn, null, "Permanently delete your account? Every case, saved location and media file in your cloud space is erased and the account is closed. This cannot be undone. Copies on this device are NOT deleted \u2014 they stay here, signed out."),
+                    React.createElement("div", { className: "cp-row", style: { gap: 6, flexWrap: "wrap" } },
+                        React.createElement("button", { className: "cp-btn cp-btn--rec", onClick: deleteAccount, disabled: busy },
+                            React.createElement(Trash2, { size: 15 }),
+                            " Yes, delete my account"),
+                        React.createElement("button", { className: "cp-btn", onClick: () => setDelArm(false), disabled: busy }, "Keep my account")))) : (React.createElement("button", { className: "cp-btn cp-btn--sm cp-btn--ghost", onClick: () => setDelArm(true), disabled: busy },
+                    React.createElement(Trash2, { size: 14 }),
+                    " Delete account & cloud data"))))) : (React.createElement(React.Fragment, null,
+                React.createElement("p", { className: "cp-hint", style: { marginTop: 0 } }, "Optional. Sign in and your cases and media back themselves up to a private cloud space, and show up on your other devices. No password \u2014 a sign-in link is emailed to you instead."),
+                React.createElement("div", { className: "cp-row", style: { gap: 6, flexWrap: "wrap" } },
+                    React.createElement("input", { className: "cp-input", style: { flex: 1, minWidth: 200 }, type: "email", inputMode: "email", autoComplete: "email", placeholder: "you@example.com", value: email, onChange: e => setEmail(e.target.value) }),
+                    React.createElement("button", { className: "cp-btn cp-btn--go", onClick: sendLink, disabled: busy || !email.trim() },
+                        React.createElement(Mail, { size: 15 }),
+                        " Email me a sign-in link")),
+                linkSent && (React.createElement("p", { className: "cp-hint", style: { marginTop: 8 } }, "If the inbox stays empty, check spam \u2014 the sender is Supabase.")))),
+            status && React.createElement("p", { className: "cp-hint cp-mono", style: { marginTop: 8 } }, status))));
 }
 /* ------------------------------ app ------------------------------- */
 function CypherProtocol() {
@@ -2379,35 +3370,35 @@ function CypherProtocol() {
     const wide = useWide();
     const fileIn = useRef(null);
     const [sync, setSync] = useState({ at: null, others: [], checked: false });
-    const [storeInfo, setStoreInfo] = useState(null);
+    const [usage, setUsage] = useState(null);
+    const [ready, setReady] = useState(null); // a packed backup waiting to be handed off
+    const [pasteOpen, setPasteOpen] = useState(false);
+    const [pasted, setPasted] = useState("");
+    const [locations, setLocations] = useState([]);
+    const [backupMeta, setBackupMeta] = useState(null);
+    const [metaLoaded, setMetaLoaded] = useState(false);
+    const [corpus, setCorpus] = useState({});
+    const [prefs, setPrefs] = useState(null);
+    const [ghostIds, setGhostIds] = useState(() => new Set());
+    const [ghostUnlocked, setGhostUnlocked] = useState(false);
+    const [openNudge, setOpenNudge] = useState(false);
+    const nudgeChecked = useRef(false);
     const archiveCache = useRef(null);
     const backupCache = useRef(null);
     const fresh = useRef(new Set());
     useEffect(() => {
         (async () => {
-            const [i, g] = await Promise.all([S.get(K.index), S.get(K.gear)]);
+            const [i, g, locs, bm, pf] = await Promise.all([S.get(K.index), S.get(K.gear), S.get(K.locations), S.get(K.backupMeta), S.get(K.prefs)]);
             setIndex(Array.isArray(i) ? i : []);
             setGear(Array.isArray(g) ? g : []);
+            setLocations(Array.isArray(locs) ? locs : []);
+            setBackupMeta(bm && typeof bm === "object" ? bm : null);
+            setPrefs(pf && typeof pf === "object" ? pf : { red: false });
+            setMetaLoaded(true);
             setLoading(false);
             const probe = await S.set("cypher-protocol:probe", nowISO());
             if (!probe)
                 setErr(`Storage is not accepting writes here (${S.status().error || "unknown reason"}). The app still works, but anything you enter lives only until you close this page. If you are in Private Browsing, leave it and reopen normally.`);
-            // Ask the browser not to evict this site under storage pressure.
-            // Safari frequently declines, so treat it as a request and keep
-            // exporting backups regardless.
-            try {
-                if (navigator.storage && navigator.storage.persist)
-                    await navigator.storage.persist();
-            }
-            catch (e) { }
-            try {
-                if (navigator.storage && navigator.storage.estimate) {
-                    const est = await navigator.storage.estimate();
-                    if (est && est.quota)
-                        setStoreInfo({ usage: est.usage || 0, quota: est.quota });
-                }
-            }
-            catch (e) { }
         })();
     }, []);
     const writeIndex = async (next) => {
@@ -2417,6 +3408,107 @@ function CypherProtocol() {
         }
         catch (e) { }
     };
+    /* Backup bookkeeping: when the last export actually left the app, and
+       whether reminders are snoozed. Best-effort local timestamps only. */
+    const markExported = useCallback(() => {
+        setBackupMeta(prev => {
+            const m = { ...(prev || {}), lastExportAt: nowISO() };
+            S.set(K.backupMeta, m).catch(() => { });
+            return m;
+        });
+    }, []);
+    const snoozeBackup = useCallback(() => {
+        setBackupMeta(prev => {
+            const m = { ...(prev || {}), snoozedUntil: new Date(Date.now() + 30 * 86400000).toISOString() };
+            S.set(K.backupMeta, m).catch(() => { });
+            return m;
+        });
+        setOpenNudge(false);
+    }, []);
+    /* Reusable location profiles — the site, divorced from any one case. */
+    const saveLocation = useCallback(fields => {
+        const name = (fields.name || "").trim();
+        if (!name)
+            return;
+        setLocations(prev => {
+            const existing = prev.find(l => (l.name || "").trim().toLowerCase() === name.toLowerCase());
+            const prof = existing
+                ? { ...existing, ...fields, name, updatedAt: nowISO() }
+                : { id: uid(), ...fields, name, updatedAt: nowISO() };
+            const next = existing ? prev.map(l => (l.id === existing.id ? prof : l)) : [...prev, prof];
+            S.set(K.locations, next).catch(() => { });
+            return next;
+        });
+    }, []);
+    const deleteLocation = useCallback(id => {
+        setLocations(prev => {
+            const next = prev.filter(l => l.id !== id);
+            S.set(K.locations, next).catch(() => { });
+            return next;
+        });
+    }, []);
+    /* Keep the full-text search corpus in step with the cases. Every body
+       is re-read on each run — deliberately no timestamp cache: the detail
+       view only reports summary-visible changes upward, so a witness
+       account or a log entry can change without the index (or its
+       updatedAt) moving at all, and a cache keyed on it would freeze.
+       Case bodies are small (media lives under its own keys), so a plain
+       rescan is cheap. Runs when the index changes and whenever a case is
+       opened or closed, which brackets every editing session. */
+    useEffect(() => {
+        let dead = false;
+        (async () => {
+            const next = {};
+            const ghosts = new Set();
+            for (const row of index) {
+                const c = await S.get(K.case(row.id));
+                if (dead)
+                    return;
+                if (c) {
+                    next[row.id] = caseHaystack(c);
+                    if (c.ghost)
+                        ghosts.add(row.id);
+                }
+            }
+            if (!dead) {
+                setCorpus(next);
+                setGhostIds(ghosts);
+            }
+        })();
+        return () => { dead = true; };
+    }, [index, openId]);
+    /* The on-open backup reminder: checked exactly once per launch, after
+       the store has loaded. Fires only when something has changed since the
+       newest export AND that export (or, with none, the oldest case edit)
+       is more than a week old. Snoozing silences it for 30 days. */
+    useEffect(() => {
+        if (loading || !metaLoaded || nudgeChecked.current)
+            return;
+        nudgeChecked.current = true;
+        if (!index.length)
+            return;
+        if (backupMeta && backupMeta.snoozedUntil && Date.parse(backupMeta.snoozedUntil) > Date.now())
+            return;
+        const lastExp = backupMeta && backupMeta.lastExportAt ? Date.parse(backupMeta.lastExportAt) : 0;
+        const edits = index.map(c => Date.parse(c.updatedAt || "") || 0);
+        const newestEdit = Math.max(0, ...edits);
+        if (newestEdit <= lastExp)
+            return;
+        const baseline = lastExp || Math.min(...edits);
+        if (Date.now() - baseline > 7 * 86400000)
+            setOpenNudge(true);
+    }, [loading, metaLoaded, index, backupMeta]);
+    /* Cloud merges land through here so the list, the search corpus and
+       the storage meter see them like any other local change. The sync
+       engine has already written the case bodies and media itself. */
+    const applyCloudPull = useCallback((nextIndex, nextLocations) => {
+        if (nextIndex)
+            writeIndex(nextIndex);
+        if (nextLocations) {
+            setLocations(nextLocations);
+            S.set(K.locations, nextLocations).catch(() => { });
+        }
+    }, []);
     const onSaved = useCallback(sum => {
         setIndex(prev => {
             const next = prev.some(c => c.id === sum.id)
@@ -2426,6 +3518,45 @@ function CypherProtocol() {
             return next;
         });
     }, []);
+    /* Ghost Mode state. The red preference is a device setting; the
+       lock is session-only — every load starts locked, and locking
+       again is instant. While locked, ghost cases are cut out of
+       everything the list can show: rows, counts, the search corpus,
+       even the printed archive. Backups are the exception — they are
+       the private copy, and they carry ghost cases whole. */
+    const visibleIndex = useMemo(() => (ghostUnlocked ? index : index.filter(r => !ghostIds.has(r.id))), [index, ghostIds, ghostUnlocked]);
+    const visibleCorpus = useMemo(() => {
+        if (ghostUnlocked)
+            return corpus;
+        const out = {};
+        for (const [cid, hay] of Object.entries(corpus))
+            if (!ghostIds.has(cid))
+                out[cid] = hay;
+        return out;
+    }, [corpus, ghostIds, ghostUnlocked]);
+    const toggleRed = useCallback(() => {
+        setPrefs(prev => {
+            const n = { ...(prev || {}), red: !(prev && prev.red) };
+            S.set(K.prefs, n).catch(() => { });
+            return n;
+        });
+    }, []);
+    const tryGhostUnlock = useCallback(async (pin) => {
+        const okPin = await ghostPinCheck(pin);
+        /* The printed-archive cache is built from whatever was visible
+           at the time — a lock-state change invalidates it both ways. */
+        if (okPin) {
+            archiveCache.current = null;
+            setGhostUnlocked(true);
+        }
+        return okPin;
+    }, []);
+    const lockGhosts = useCallback(() => {
+        archiveCache.current = null;
+        setGhostUnlocked(false);
+        if (openId && ghostIds.has(openId))
+            setOpenId(null);
+    }, [openId, ghostIds]);
     const newCase = async (seed) => {
         const c = blankCase(nextCaseNumber(index));
         if (seed && seed.name) {
@@ -2462,9 +3593,67 @@ function CypherProtocol() {
         const keys = await S.list(`media:${c.id}:`);
         for (const k of keys)
             await S.del(k);
+        // Media lives under its own keys. Without this they survive the case that
+        // owned them and sit in storage forever, unreachable.
+        try {
+            for (const k of await S.list(`media:${c.id}:`))
+                await S.del(k);
+        }
+        catch (e) { /* the case still goes */ }
         await S.del(K.case(c.id));
         await writeIndex(index.filter(x => x.id !== c.id));
     };
+    /* Sweep up media whose case is gone, or which no case refers to any more. */
+    const reclaim = async () => {
+        setBusy("Checking storage");
+        let keys = [];
+        try {
+            keys = await S.list("media:");
+        }
+        catch (e) {
+            setBusy("");
+            setNote("Could not read storage: " + (e.message || e));
+            return;
+        }
+        // Every media id still claimed by a live case.
+        const live = new Set();
+        for (const row of index) {
+            const c = await S.get(K.case(row.id));
+            if (!c)
+                continue;
+            for (const m of (c.media || []))
+                live.add(K.media(c.id, m.id));
+        }
+        let freed = 0, removed = 0;
+        for (const k of keys) {
+            if (live.has(k))
+                continue;
+            try {
+                const rec = await S.get(k);
+                freed += rec && rec.dataUrl ? rec.dataUrl.length * 0.75 : 0;
+            }
+            catch (e) { }
+            await S.del(k);
+            removed++;
+        }
+        setBusy("");
+        setNote(removed
+            ? `Removed ${removed} orphaned file${removed === 1 ? "" : "s"}, about ${(freed / 1048576).toFixed(1)} MB. These belonged to cases that no longer exist.`
+            : "Nothing to clean up — every stored file belongs to a case.");
+        readUsage();
+    };
+    /* Storage meter. */
+    const readUsage = async () => {
+        try {
+            if (navigator.storage && navigator.storage.estimate) {
+                const e = await navigator.storage.estimate();
+                if (e && e.quota)
+                    setUsage({ used: e.usage || 0, quota: e.quota });
+            }
+        }
+        catch (e) { }
+    };
+    useEffect(() => { readUsage(); }, [index.length]);
     // Poll the shared index so cases opened on another device show up here.
     useEffect(() => {
         let stop = false, ticks = 0;
@@ -2518,9 +3707,9 @@ function CypherProtocol() {
             return;
         }
         setBusy("Assembling archive");
-        setNote(`Assembling ${index.length} case${index.length === 1 ? "" : "s"} — photos take a moment…`);
+        setNote(`Assembling ${visibleIndex.length} case${visibleIndex.length === 1 ? "" : "s"} — photos take a moment…`);
         const items = [];
-        const ordered = [...index].sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+        const ordered = [...visibleIndex].sort((a, b) => (a.date || "").localeCompare(b.date || ""));
         for (const row of ordered) {
             const c = await S.get(K.case(row.id));
             if (!c)
@@ -2533,7 +3722,7 @@ function CypherProtocol() {
         }
         const html = dossierHTML(items, [...DEFAULT_GEAR, ...gear]);
         archiveCache.current = html;
-        setTimeout(() => { archiveCache.current = null; }, 45000);
+        setTimeout(() => { archiveCache.current = null; }, 120000);
         if (asFile) {
             setBusy("");
             const r = await saveFile(`case-log-archive-${dateStamp()}.html`, html, "text/html");
@@ -2546,33 +3735,120 @@ function CypherProtocol() {
                 : "The browser blocked printing. Use Download archive instead.");
         }
     };
-    const backupAll = async () => {
-        if (backupCache.current) {
-            const r = await saveFile(`case-log-backup-${dateStamp()}.json`, backupCache.current, "application/json");
-            setNote(saveResultMessage(r, "Backup"));
-            return;
+    /* Two kinds of backup.
+  
+       Text-only packs every case without media. It is small, it always works,
+       and it protects the part that cannot be re-shot: your notes, readings and
+       log. Full backup carries photos and clips, but only one case at a time —
+       JSON.stringify has a hard string-length limit and a whole library of
+       photos sails past it, which is why this used to die in silence. */
+    const packText = async () => {
+        setBusy("Packing notes");
+        try {
+            const payload = { app: "cypher-protocol", version: 1, kind: "text-only",
+                exportedAt: nowISO(), customGear: gear, locations, cases: [] };
+            const grec = await S.get(K.ghost);
+            if (grec && grec.salt && grec.hash)
+                payload.ghostPin = grec;
+            for (const row of index) {
+                const c = await S.get(K.case(row.id));
+                if (c)
+                    payload.cases.push({ ...c, media: (c.media || []).map(m => ({ ...m, missing: true })) });
+            }
+            const text = JSON.stringify(payload);
+            setBusy("");
+            setReady({ text, n: payload.cases.length, mb: (text.length / 1048576).toFixed(1),
+                label: `all ${payload.cases.length} case${payload.cases.length === 1 ? "" : "s"}, notes only`,
+                file: `cypher-protocol-notes-${dateStamp()}.json` });
+            setNote("");
         }
-        setBusy("Packing archive");
-        setNote("Packing every case and photo — this can take a moment…");
-        const payload = { app: "case-log", version: 1, exportedAt: nowISO(), customGear: gear, cases: [] };
-        for (const row of index) {
+        catch (e) {
+            setBusy("");
+            setNote("Could not pack the notes: " + ((e && e.message) || e));
+        }
+    };
+    const packCase = async (row) => {
+        setBusy("Packing " + row.caseNumber);
+        try {
             const c = await S.get(K.case(row.id));
             if (!c)
-                continue;
+                throw new Error("that case could not be read back from storage");
             const mediaFiles = {};
-            for (const m of c.media) {
+            let bytes = 0;
+            for (const m of (c.media || [])) {
                 const rec = await S.get(K.media(c.id, m.id));
-                if (rec)
-                    mediaFiles[m.id] = rec;
+                if (!rec)
+                    continue;
+                bytes += (rec.dataUrl || "").length;
+                // ~256MB of string is where phones start throwing. Stop well short.
+                if (bytes > 200000000) {
+                    throw new Error(`this case holds more media than one file can carry (past ${(bytes / 1048576).toFixed(0)} MB). ` +
+                        `Export it as notes only, or remove some video first.`);
+                }
+                mediaFiles[m.id] = rec;
             }
-            payload.cases.push({ ...c, mediaFiles });
+            const payload = { app: "cypher-protocol", version: 1, kind: "case",
+                exportedAt: nowISO(), customGear: gear, locations, cases: [{ ...c, mediaFiles }] };
+            const grec = await S.get(K.ghost);
+            if (grec && grec.salt && grec.hash)
+                payload.ghostPin = grec;
+            const text = JSON.stringify(payload);
+            setBusy("");
+            setReady({ text, n: 1, mb: (text.length / 1048576).toFixed(1),
+                label: `${row.caseNumber}, with ${Object.keys(mediaFiles).length} media file${Object.keys(mediaFiles).length === 1 ? "" : "s"}`,
+                file: `${row.caseNumber}-full.json` });
+            setNote("");
         }
-        const text = JSON.stringify(payload);
-        backupCache.current = text;
-        setTimeout(() => { backupCache.current = null; }, 120000);
-        setBusy("");
-        const r = await saveFile(`case-log-backup-${dateStamp()}.json`, text, "application/json");
-        setNote(`${payload.cases.length} case${payload.cases.length === 1 ? "" : "s"} packed. ` + saveResultMessage(r, "Backup"));
+        catch (e) {
+            setBusy("");
+            const m = (e && e.message) || String(e);
+            setNote(/string length|Invalid string|allocation|RangeError/i.test(m)
+                ? "That case has too much media to fit in one file. Export it as notes only, or clear some video out of it first."
+                : "Could not pack that case: " + m);
+        }
+    };
+    /* Second tap. Runs straight off the press with the file already built, which
+       is the only way iOS will open the share sheet. */
+    const sendBackup = async () => {
+        if (!ready)
+            return;
+        const r = await saveFile(ready.file || `cypher-protocol-backup-${dateStamp()}.json`, ready.text, "application/json");
+        if (r === "shared" || r === "saved" || r === "downloaded")
+            markExported();
+        if (r === "shared" || r === "saved") {
+            setReady(null);
+            setNote("Backup handed off. Save it somewhere you will find it again.");
+        }
+        else if (r === "cancelled")
+            setNote("Cancelled — the backup is still packed and ready.");
+        else
+            setNote("That went to the download folder. If nothing appeared, this app cannot download; " +
+                "use Copy instead and paste it into Notes.");
+    };
+    const copyBackup = async () => {
+        if (!ready)
+            return;
+        try {
+            await navigator.clipboard.writeText(ready.text);
+            markExported();
+            setNote("Backup copied. Paste it into Notes or Mail, then use Paste a backup on the other copy.");
+        }
+        catch (e) {
+            setNote("The clipboard refused (" + (e.message || "unknown") + "). Try the share sheet instead.");
+        }
+    };
+    const restoreText = async (text) => {
+        let obj;
+        try {
+            obj = JSON.parse(text.trim());
+        }
+        catch (e) {
+            setNote("That text is not a backup (" + (e.message || "could not read it") + ").");
+            return;
+        }
+        setPasteOpen(false);
+        setPasted("");
+        await applyBackup(obj);
     };
     const restore = async (file) => {
         setNote("Reading backup…");
@@ -2584,6 +3860,9 @@ function CypherProtocol() {
             setNote("That file is not readable JSON. Nothing was changed.");
             return;
         }
+        await applyBackup(obj);
+    };
+    const applyBackup = async (obj) => {
         const incoming = Array.isArray(obj && obj.cases) ? obj.cases
             : (obj && obj.caseNumber ? [obj] : null);
         if (!incoming || !incoming.length) {
@@ -2631,6 +3910,36 @@ function CypherProtocol() {
             }
             catch (e) { }
         }
+        if (Array.isArray(obj.locations) && obj.locations.length) {
+            const byId = new Map();
+            for (const l of locations)
+                if (l && l.id)
+                    byId.set(l.id, l);
+            for (const l of obj.locations) {
+                if (!l || !l.id || typeof l.name !== "string")
+                    continue;
+                const cur = byId.get(l.id);
+                if (!cur || (l.updatedAt || "") >= (cur.updatedAt || ""))
+                    byId.set(l.id, l);
+            }
+            const mergedLocs = [...byId.values()];
+            setLocations(mergedLocs);
+            try {
+                await S.set(K.locations, mergedLocs);
+            }
+            catch (e) { }
+        }
+        if (obj.ghostPin && obj.ghostPin.salt && obj.ghostPin.hash) {
+            /* First PIN wins: a device that already has one keeps its own;
+               a device with none adopts the backup's, so a ghost case
+               restored there stays locked to the same PIN. */
+            try {
+                const cur = await S.get(K.ghost);
+                if (!cur)
+                    await S.set(K.ghost, obj.ghostPin);
+            }
+            catch (e) { }
+        }
         await writeIndex(next);
         setNote(`Restored ${added} new case${added === 1 ? "" : "s"}, updated ${updated}, left ${skipped} alone because this device already had them or newer.` +
             (mediaFail ? ` ${mediaFail} media file${mediaFail === 1 ? "" : "s"} would not fit in storage and were not restored.` : ""));
@@ -2651,30 +3960,46 @@ function CypherProtocol() {
         }
         catch (e) { }
     };
-    return (React.createElement("div", { className: "cp-root" },
+    return (React.createElement("div", { className: "cp-root", "data-ghost": prefs && prefs.red ? "1" : "0" },
         React.createElement("style", null, APP_CSS),
         err && React.createElement("div", { className: "cp-wrap", style: { paddingTop: 10 } },
             React.createElement(Warn, null, err)),
         React.createElement("div", { className: "cp-wrap", style: { paddingTop: 8, paddingBottom: 0 } },
-            React.createElement("div", { className: "cp-syncbar cp-mono" },
-                React.createElement("span", { className: "cp-dot", "data-live": sync.others.length ? "1" : "0" }),
-                syncText,
-                storeInfo && React.createElement("span", { style: { marginLeft: "auto", opacity: .85 }, title: "Space this site is using on your device" }, `${space(storeInfo.usage)} of ${space(storeInfo.quota)}`))),
+            React.createElement("div", { className: "cp-syncbar cp-mono", style: { justifyContent: "space-between" } },
+                React.createElement("span", null,
+                    React.createElement("span", { className: "cp-dot", "data-live": sync.others.length ? "1" : "0" }),
+                    syncText),
+                usage && (React.createElement("span", { style: { whiteSpace: "nowrap", opacity: .85 } },
+                    (usage.used / 1073741824).toFixed(1),
+                    " GB of ",
+                    (usage.quota / 1073741824).toFixed(1),
+                    " GB")))),
         busy && React.createElement(CoinLoad, { veil: true, label: busy }),
         note && React.createElement("div", { className: "cp-wrap", style: { paddingTop: 10 } },
             React.createElement("div", { className: "cp-note" },
                 note,
                 React.createElement("button", { className: "cp-btn cp-btn--sm cp-btn--ghost", style: { marginLeft: 8 }, onClick: () => setNote("") }, "Dismiss"))),
+        openNudge && (React.createElement("div", { className: "cp-wrap", style: { paddingTop: 10 } },
+            React.createElement("div", { className: "cp-warn", style: { alignItems: "flex-start" } },
+                React.createElement(AlertTriangle, { size: 16, style: { flex: "0 0 auto", marginTop: 2 } }),
+                React.createElement("div", { style: { flex: 1 } },
+                    "Your newest backup is over a week old and cases have changed since. Everything lives in this browser until a backup leaves it.",
+                    React.createElement("div", { className: "cp-row", style: { marginTop: 8 } },
+                        React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: () => { setOpenNudge(false); packText(); } }, "Back up notes now"),
+                        React.createElement("button", { className: "cp-btn cp-btn--sm", onClick: () => setOpenNudge(false) }, "Dismiss"),
+                        React.createElement("button", { className: "cp-btn cp-btn--sm cp-btn--ghost", onClick: snoozeBackup }, "Don\u2019t show for 30 days")))))),
+        React.createElement(GhostModeBar, { red: !!(prefs && prefs.red), onToggleRed: toggleRed, unlocked: ghostUnlocked, ghostCount: ghostIds.size, onUnlock: tryGhostUnlock, onLock: lockGhosts }),
+        React.createElement(CloudSyncPanel, { index: index, locations: locations, onPulled: applyCloudPull }),
         React.createElement("input", { ref: fileIn, type: "file", accept: "application/json,.json", hidden: true, onChange: e => { const f = e.target.files && e.target.files[0]; e.target.value = ""; if (f)
                 restore(f); } }),
         wide ? (React.createElement("div", { className: "cp-shell" },
             React.createElement("aside", { className: "cp-rail" },
-                React.createElement(CaseList, { index: index, loading: loading, onOpen: setOpenId, onNew: newCase, onDelete: c => setConfirm(c), onArchive: printArchive, onBackup: backupAll, onImport: () => fileIn.current && fileIn.current.click(), rail: true, activeId: openId })),
+                React.createElement(CaseList, { index: visibleIndex, loading: loading, onOpen: setOpenId, onNew: newCase, onDelete: c => setConfirm(c), onArchive: printArchive, onBackup: packText, onPackCase: packCase, ready: ready, onSendBackup: sendBackup, onCopyBackup: copyBackup, pasteOpen: pasteOpen, setPasteOpen: setPasteOpen, pasted: pasted, setPasted: setPasted, onRestoreText: restoreText, standalone: isStandalone(), onReclaim: reclaim, onImport: () => fileIn.current && fileIn.current.click(), rail: true, activeId: openId, corpus: visibleCorpus, ghostIds: ghostUnlocked ? ghostIds : null })),
             React.createElement("main", { className: "cp-detail" }, openId
-                ? React.createElement(CaseDetail, { key: openId, id: openId, onBack: () => setOpenId(null), onSaved: onSaved, gear: gear, addGear: addGear, removeGear: removeGear, rail: true })
+                ? React.createElement(CaseDetail, { key: openId, id: openId, onBack: () => setOpenId(null), onSaved: onSaved, gear: gear, addGear: addGear, removeGear: removeGear, rail: true, locations: locations, onSaveLocation: saveLocation, onDeleteLocation: deleteLocation, backupMeta: backupMeta, onSnoozeBackup: snoozeBackup, onExported: markExported })
                 : React.createElement("p", { className: "cp-empty", style: { paddingTop: 80 } }, "Pick a case on the left, or open a new one.")))) : (openId
-            ? React.createElement(CaseDetail, { id: openId, onBack: () => setOpenId(null), onSaved: onSaved, gear: gear, addGear: addGear, removeGear: removeGear })
-            : React.createElement(CaseList, { index: index, loading: loading, onOpen: setOpenId, onNew: newCase, onDelete: c => setConfirm(c), onArchive: printArchive, onBackup: backupAll, onImport: () => fileIn.current && fileIn.current.click() })),
+            ? React.createElement(CaseDetail, { id: openId, onBack: () => setOpenId(null), onSaved: onSaved, gear: gear, addGear: addGear, removeGear: removeGear, locations: locations, onSaveLocation: saveLocation, onDeleteLocation: deleteLocation, backupMeta: backupMeta, onSnoozeBackup: snoozeBackup, onExported: markExported })
+            : React.createElement(CaseList, { index: visibleIndex, loading: loading, onOpen: setOpenId, onNew: newCase, onDelete: c => setConfirm(c), onArchive: printArchive, onBackup: packText, onPackCase: packCase, ready: ready, onSendBackup: sendBackup, onCopyBackup: copyBackup, pasteOpen: pasteOpen, setPasteOpen: setPasteOpen, pasted: pasted, setPasted: setPasted, onRestoreText: restoreText, standalone: isStandalone(), onReclaim: reclaim, onImport: () => fileIn.current && fileIn.current.click(), corpus: visibleCorpus, ghostIds: ghostUnlocked ? ghostIds : null })),
         confirm && (React.createElement("div", { style: {
                 position: "fixed", inset: 0, background: "rgba(4,6,8,.8)", display: "grid",
                 placeItems: "center", zIndex: 60, padding: 18
@@ -2731,6 +4056,24 @@ if ("serviceWorker" in navigator) {
       document.head.appendChild(s);
     });
   }
+
+  /* Supabase (cloud sync) is optional. It loads in parallel and never
+     blocks startup: if every mirror fails, the app runs exactly as it
+     always has and the cloud features simply never appear. When it does
+     land, it announces itself so the app can light up the sync panel. */
+  var SB_MIRRORS = [
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js",
+    "https://unpkg.com/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js"
+  ];
+  function loadSupabase(i) {
+    if (i >= SB_MIRRORS.length) return;
+    load(SB_MIRRORS[i])
+      .then(function () {
+        try { window.dispatchEvent(new Event("cp-supabase")); } catch (e) {}
+      })
+      .catch(function () { loadSupabase(i + 1); });
+  }
+  loadSupabase(0);
 
   function tryMirror(i) {
     if (i >= MIRRORS.length) {
